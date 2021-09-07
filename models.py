@@ -40,6 +40,8 @@ class Session(object):
         geo="GB",
         duration_mins=30,
         username="-",
+        theme=None,
+        pages=None,
     ):
         if source_ip:
             self.source_ip = source_ip
@@ -65,6 +67,8 @@ class Session(object):
         self.noise_interactions = noise_interactions
         self.stickystr = False
         self.geo = geo
+        self.theme = theme
+        self.pages = pages
 
     def trigger(self, datetime):
         self.last_uri = self.current_uri

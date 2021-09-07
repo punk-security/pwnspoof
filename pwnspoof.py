@@ -36,6 +36,7 @@ parser.add_argument(
     help="App to emulate",
     choices=[
         "banking",
+        "wordpress",
     ],
 )
 parser.add_argument(
