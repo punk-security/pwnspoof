@@ -188,7 +188,10 @@ class Wordpress:
     ]
 
     static_random_page = ActivityPattern(consecutive=True).add_interaction(
-        interactions.misc.wp_page_success
+        interactions.misc.wp_page_success,
+        interactions.php.index_seo_friendly_success,
+        interactions.php.index_seo_friendly_success,
+        interactions.php.index_seo_friendly_success,        
     )
 
     static_login_page_success = ActivityPattern(consecutive=True).add_interaction(
