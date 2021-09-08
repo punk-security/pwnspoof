@@ -120,7 +120,7 @@ class php:
     wp_admin_login_page_success = Interaction(uri="wp-login.php")
 
     wp_admin_login_success = Interaction(
-        uri="wp-login.php", method="POST", status_code=301
+        uri="wp-login.php", method="POST", status_code=301, login=True
     )
 
     wp_admin_login_failed = Interaction(
@@ -138,7 +138,6 @@ class php:
         uri="wp-admin/plugins.php",
         method="POST",
         query="action=install-plugin&plugin=__rand_two_words__",
-        login=True,
     )
 
     wp_admin_plugins_install_success = Interaction(
