@@ -192,8 +192,8 @@ class Wordpress:
             interactions.misc.wp_page_success,
             interactions.php.index_seo_friendly_success,
             interactions.php.index_seo_friendly_success,
-            interactions.php.index_seo_friendly_success, 
-        ]       
+            interactions.php.index_seo_friendly_success,
+        ]
     )
 
     static_login_page_success = ActivityPattern(consecutive=True).add_interaction(
