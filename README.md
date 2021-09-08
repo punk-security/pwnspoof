@@ -80,7 +80,7 @@ python pwnspoof.py --help
 
 ```
 positional arguments:
-  {banking,social}      App to emulate
+  {banking,wordpress}   App to emulate
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -110,6 +110,8 @@ attack settings:
                         Number of attacker sequences to spoof (default: bruteforce)
   --attacker-geo ATTACKER_GEO
                         Set the attackers geo by 2 letter region. Use RD for random (default: RD)
+  --attacker-user-agent ATTACKER_USER_AGENT
+                        Set the attackers user-agent. Use RD for random (default: RD)
 ```
 
 ### Examples
