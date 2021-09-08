@@ -20,7 +20,7 @@ banner = """\
      /_/    \__,_/_/ /_/_/|_|/____/\___/\___/\__,_/_/  /_/\__/\__, /  
                                             PRESENTS         /____/  
 
-                         -- PWNSpoof v0.2.0--
+                         -- PWNSpoof v0.2.1--
   A spoof log generator to practice incident response and threat hunting!
         """
 
@@ -104,6 +104,12 @@ attack_settings.add_argument(
     default="RD",
     help="Set the attackers geo by 2 letter region.  Use RD for random (default: %(default)s)",
 )
+attack_settings.add_argument(
+    "--attacker-user-agent",
+    type=str,
+    default="RD",
+    help="Set the attackers user-agent.  Use RD for random (default: %(default)s)",
+)
 try:
     args = parser.parse_args()
 except SystemExit as e:
@@ -158,6 +164,11 @@ print(" Done!    ")
 if args.attacker_geo == "RD":
     args.attacker_geo = None
 
+if args.attacker_user_agent == "RD":
+    attacker_user_agent = random.choice(default_user_agents)
+else:
+    attacker_user_agent = args.attacker_user_agent
+
 attacker_sessions = []
 
 print("Generating {} attack sessions".format(args.spoofed_attacks))
@@ -166,7 +177,7 @@ for x in range(0, args.spoofed_attacks):
     attack = Session(
         attack_start_date,
         list(apps[args.app].attacks[args.attack_type]()),
-        user_agent=random.choice(default_user_agents),
+        user_agent=attacker_user_agent,
         username=random.choice(sh.sessions).username,
         geo=args.attacker_geo,
     )
