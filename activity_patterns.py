@@ -4,6 +4,15 @@ import interactions
 from copy import copy
 
 
+def one_in_x_chance_of(x):
+    return randint(0, x) == x
+
+
+def x_in_hundred_chance_of(x):
+    result = randint(0, 100) < x
+    return result
+
+
 class Banking:
     static_navigate_to_transactions = ActivityPattern(
         consecutive=True
@@ -66,6 +75,12 @@ class Banking:
 
 
 class Misc:
+    static_root = ActivityPattern(consecutive=True).add_interaction(
+        interactions.misc.root_success
+    )
+    static_favico = ActivityPattern(consecutive=True).add_interaction(
+        interactions.misc.favico_success
+    )
     static_home_page = ActivityPattern(
         min_period_between_invocations_s=1, max_period_between_invocations_s=2, count=4
     ).add_interactions(
@@ -153,6 +168,132 @@ class Misc:
             yield ActivityPattern(consecutive=True).add_interaction(
                 interactions.php.faq_lfi
             )
+        # TODO: this should have noise suppression
+        yield ActivityPattern(count=(randint(4, 8))).add_interaction(
+            interactions.php.cmd_injection_on_sticky_page_recon
+        )
+        yield ActivityPattern(count=(randint(1, 2))).add_interaction(
+            interactions.php.cmd_injection_on_sticky_page_attack
+        )
+
+
+class Wordpress:
+    noise = [
+        interactions.css.wp_theme_versioned_success,
+        interactions.css.wp_versioned_success,
+        interactions.js.wp_theme_versioned_success,
+        interactions.js.wp_versioned_success,
+        interactions.misc.wp_jpg_success,
+        interactions.php.xmlrpc_success,
+    ]
+
+    static_random_page = ActivityPattern(consecutive=True).add_interactions(
+        [
+            interactions.misc.wp_page_success,
+            interactions.php.index_seo_friendly_success,
+            interactions.php.index_seo_friendly_success,
+            interactions.php.index_seo_friendly_success, 
+        ]       
+    )
+
+    static_login_page_success = ActivityPattern(consecutive=True).add_interaction(
+        interactions.php.wp_admin_login_page_success
+    )
+
+    static_login_success = ActivityPattern(consecutive=True).add_interaction(
+        interactions.php.wp_admin_login_success
+    )
+    static_login_failed = ActivityPattern(consecutive=True).add_interaction(
+        interactions.php.wp_admin_login_failed
+    )
+
+    static_admin_pages = ActivityPattern(
+        min_period_between_invocations_s=10,
+        max_period_between_invocations_s=120,
+        count=10,
+    ).add_interactions(
+        [
+            interactions.php.wp_admin_update_success,
+            interactions.php.wp_admin_users_success,
+            interactions.php.wp_admin_plugins_success,
+            interactions.php.wp_admin_plugins_install_success,
+            interactions.php.wp_admin_health_success,
+        ]
+    )
+
+    static_add_plugin = ActivityPattern(consecutive=True,).add_interactions(
+        [
+            interactions.php.wp_admin_plugins_success,
+            interactions.php.wp_admin_plugins_install_post_success,
+        ]
+    )
+
+    static_add_user = ActivityPattern(consecutive=True,).add_interactions(
+        [
+            interactions.php.wp_admin_users_success,
+            interactions.php.wp_admin_users_post_success,
+        ]
+    )
+
+    @staticmethod
+    def dynamic_browse():
+        if x_in_hundred_chance_of(x=9):
+            # 9/10 chance of coming in via index page
+            yield Misc.static_root
+        if x_in_hundred_chance_of(x=6):
+            yield Misc.static_favico
+        for i in range(3, 8):
+            yield Wordpress.static_random_page
+
+    def dynamic_admin():
+        if x_in_hundred_chance_of(x=50):
+            # 5/10 chance of arriving via root
+            yield Misc.static_root
+        yield Wordpress.static_login_page_success
+        if x_in_hundred_chance_of(x=20):
+            # 2/10 chance of password failed
+            yield Wordpress.static_login_failed
+        # Login OK
+        yield Wordpress.static_login_success
+        # Do some read-only admin things
+        admin_activity = copy(Wordpress.static_admin_pages)
+        admin_activity.count = randint(2, 8)
+        yield admin_activity
+        # Maybe do some other things
+        if x_in_hundred_chance_of(x=20):
+            yield Wordpress.static_add_user
+            return
+        if x_in_hundred_chance_of(x=20):
+            yield Wordpress.static_add_plugin
+            return
+
+    def dynamic_browse_or_admin():
+        if x_in_hundred_chance_of(x=5):
+            pattern = Wordpress.dynamic_admin
+        else:
+            pattern = Wordpress.dynamic_browse
+        for i in pattern():
+            yield i
+
+    def dynamic_brute_force():
+        yield ActivityPattern(
+            max_period_between_invocations_s=3,
+            min_period_between_invocations_s=1,
+            count=randint(100, 300),
+        ).add_interaction(interactions.php.wp_admin_login_failed)
+        # Login OK
+        yield Wordpress.static_login_success
+        yield Wordpress.static_admin_pages
+        yield Wordpress.static_add_user
+
+    def dynamic_malicious_plugin():
+        # Login
+        yield Wordpress.static_login_page_success
+        yield Wordpress.static_login_success
+        yield Wordpress.static_admin_pages
+        # upload plugin a few times to try and get the backdoor
+        for i in range(1, 5):
+            yield Wordpress.static_add_plugin
         # TODO: this should have noise suppression
         yield ActivityPattern(count=(randint(4, 8))).add_interaction(
             interactions.php.cmd_injection_on_sticky_page_recon

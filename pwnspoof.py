@@ -20,7 +20,7 @@ banner = """\
      /_/    \__,_/_/ /_/_/|_|/____/\___/\___/\__,_/_/  /_/\__/\__, /  
                                             PRESENTS         /____/  
 
-                         -- PWNSpoof v0.1.0--
+                         -- PWNSpoof v0.2.0--
   A spoof log generator to practice incident response and threat hunting!
         """
 
@@ -36,6 +36,7 @@ parser.add_argument(
     help="App to emulate",
     choices=[
         "banking",
+        "wordpress",
     ],
 )
 parser.add_argument(
