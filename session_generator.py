@@ -268,7 +268,7 @@ def SessionGenerator(
 
 def RandomDatetime(start, end, hours_list):
     max_delta = end - start
-    days_delta = timedelta(days=random.randint(0, max_delta.days - 1))
+    days_delta = timedelta(days=random.randint(0, max_delta.days))
     hours_delta = timedelta(hours=random.choice(hours_list))
     minutes_delta = timedelta(minutes=random.randint(0, 59))
     delta = days_delta + hours_delta + minutes_delta
