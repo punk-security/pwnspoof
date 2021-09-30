@@ -67,8 +67,14 @@ for session_count in session_length_tests:
             source_ips_count = len(list(dict.fromkeys(source_ips)))
             average_sessions_per_user = max_sessions_per_user / 2
             ideal_source_ip_count = session_count / average_sessions_per_user
-            print (f"... we have {source_ips_count} unique source IPs, and should have around {ideal_source_ip_count:.0f}")
-            assert ideal_source_ip_count * 0.5 < source_ips_count < ideal_source_ip_count * 1.5 
+            print(
+                f"... we have {source_ips_count} unique source IPs, and should have around {ideal_source_ip_count:.0f}"
+            )
+            assert (
+                ideal_source_ip_count * 0.5
+                < source_ips_count
+                < ideal_source_ip_count * 1.5
+            )
 
 
 # Test session timestamp generation and spread
@@ -110,4 +116,3 @@ for log_windows_days in log_window_days_tests:
         f"... session start time deviation is {deviation_s:.0f} and should be {target_deviation_s:.0f} which is factor difference of {deviation_s / target_deviation_s:.2f}"
     )
     assert 0.5 < (deviation_s / target_deviation_s) < 1.5
-
