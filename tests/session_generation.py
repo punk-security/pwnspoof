@@ -59,7 +59,10 @@ for session_count in session_length_tests:
         lower_bound = session_count - max_sessions_per_user
         upper_bound = session_count + max_sessions_per_user
         print(
-            f"testing session counts - {len(sessions)} is greater than {lower_bound} and less than {upper_bound}"
+            f"testing session counts - SESSION COUNT:'{session_count}'  SESSIONS PER USER: '{max_sessions_per_user}'"
+        )
+        print(
+            f"... we have '{len(sessions)}' sessions which should be between {lower_bound} and {upper_bound}"
         )
         assert lower_bound <= len(sessions) <= upper_bound
         if max_sessions_per_user > 1 and session_count / max_sessions_per_user > 2:
