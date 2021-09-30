@@ -69,17 +69,29 @@ for session_count in session_length_tests:
         # Test source IPs and username counts are as expected
         if max_sessions_per_user > 1 and session_count / max_sessions_per_user > 2:
             source_ips = list(x.source_ip for x in sessions)
-            source_ips_count = len(list(dict.fromkeys(source_ips)))
+            source_users = list(x.source_ip for x in sessions)
+            deduped_list_count = lambda e: len(list(dict.fromkeys(e)))
+            source_ip_count = deduped_list_count(source_ips)
+            source_user_count = deduped_list_count(source_users)
             average_sessions_per_user = max_sessions_per_user / 2
-            ideal_source_ip_count = session_count / average_sessions_per_user
+            ideal_source_count = session_count / average_sessions_per_user
             print(
-                f"... we have {source_ips_count} unique source IPs, and should have around {ideal_source_ip_count:.0f}"
+                f"... we have {source_ip_count} unique source IPs, and should have around {ideal_source_count:.0f}"
             )
             assert (
-                ideal_source_ip_count * 0.5
-                < source_ips_count
-                < ideal_source_ip_count * 1.5
+                ideal_source_count * 0.5
+                < source_ip_count
+                < ideal_source_count * 1.5
             )
+            print(
+                f"... we have {source_user_count} unique users, and should have around {ideal_source_count:.0f}"
+            )
+            assert (
+                ideal_source_count * 0.5
+                < source_user_count 
+                < ideal_source_count * 1.5
+            )
+
 
 
 # Test session timestamp generation and spread
