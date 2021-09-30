@@ -245,23 +245,31 @@ def SessionGenerator(
         )
         yield s1
         # Add additional user sessions
-        for x2 in range(random.randint(0, max_sessions_per_user - 1)):
-            activity_patterns = list(app.activity_patterns())
-            duration = random.randint(
-                average_duration_mins - duration_deviation_mins,
-                average_duration_mins + duration_deviation_mins,
+        remaining_potential_user_sessions = max_sessions_per_user - 1
+        if remaining_potential_user_sessions:
+            remaining_user_sessions = random.randint(
+                0, remaining_potential_user_sessions
             )
-            sd = RandomDatetime(start_date, end_date, hours)
-            yield Session(
-                start_datetime=sd,
-                source_ip=s1.source_ip,
-                duration_mins=duration,
-                activity_patterns=activity_patterns,
-                user_agent=s1.user_agent,
-                username=username,
-                noise_interactions=app.noise_interactions,
-            )
-            i += 1
+        else:
+            remaining_user_sessions = 0
+        if remaining_user_sessions:
+            for x2 in range(remaining_user_sessions):
+                activity_patterns = list(app.activity_patterns())
+                duration = random.randint(
+                    average_duration_mins - duration_deviation_mins,
+                    average_duration_mins + duration_deviation_mins,
+                )
+                sd = RandomDatetime(start_date, end_date, hours)
+                yield Session(
+                    start_datetime=sd,
+                    source_ip=s1.source_ip,
+                    duration_mins=duration,
+                    activity_patterns=activity_patterns,
+                    user_agent=s1.user_agent,
+                    username=username,
+                    noise_interactions=app.noise_interactions,
+                )
+                i += 1
         if i > num_sessions:
             return
 
