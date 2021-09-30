@@ -46,25 +46,27 @@ def generate_sessions(
 session_length_tests = [10, 20, 50, 100]
 max_sessions_per_user_tests = [1, 3, 5, 10]
 
-# Test session count matches up
+# Test different session count configurations
 
 for session_count in session_length_tests:
     for max_sessions_per_user in max_sessions_per_user_tests:
+        print(
+            f"testing session counts - SESSION COUNT:'{session_count}'  SESSIONS PER USER: '{max_sessions_per_user}'"
+        )
         sessions = list(
             generate_sessions(
                 session_count=session_count,
                 max_session_per_user=max_sessions_per_user,
             )
         )
+        # Test session count matches up
         lower_bound = session_count - max_sessions_per_user
         upper_bound = session_count + max_sessions_per_user
-        print(
-            f"testing session counts - SESSION COUNT:'{session_count}'  SESSIONS PER USER: '{max_sessions_per_user}'"
-        )
         print(
             f"... we have '{len(sessions)}' sessions which should be between {lower_bound} and {upper_bound}"
         )
         assert lower_bound <= len(sessions) <= upper_bound
+        # Test source IPs and username counts are as expected
         if max_sessions_per_user > 1 and session_count / max_sessions_per_user > 2:
             source_ips = list(x.source_ip for x in sessions)
             source_ips_count = len(list(dict.fromkeys(source_ips)))
