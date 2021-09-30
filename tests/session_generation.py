@@ -116,7 +116,7 @@ def session_start(e):
 
 
 for log_windows_days in log_window_days_tests:
-    y = randint(1960, 2160)
+    y = randint(1980, 2160)
     m = randint(1, 12)
     d = randint(1, 28)
     sd = f"{y}{m:02d}{d:02d}"
