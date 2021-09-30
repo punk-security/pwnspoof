@@ -5,7 +5,7 @@ import sys
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
 from session_generator import SessionGenerator
-from models import SessionHandler
+from models import ActivityPattern, SessionHandler
 from apps import banking
 import datetime
 import numpy
@@ -42,6 +42,14 @@ def generate_sessions(
         max_sessions_per_user=max_session_per_user,
     )
 
+def session_iteration_count(session):
+    count = 0
+    for ap in session.activity_patterns:
+        if ap.consecutive == True:
+            count += len(ap.interactions)
+        else:
+            count += ap.count
+    return count
 
 session_length_tests = [10, 20, 50, 100]
 max_sessions_per_user_tests = [1, 3, 5, 10]
@@ -85,6 +93,13 @@ for session_count in session_length_tests:
             assert (
                 ideal_source_count * 0.5 < source_user_count < ideal_source_count * 1.5
             )
+        
+        session_interaction_counts = list(session_iteration_count(x) for x in sessions)
+        session_interaction_counts.sort()
+
+        deviation = numpy.std(session_interaction_counts)
+        print(f"... session interactions deviate between {session_interaction_counts[0]} and {session_interaction_counts[-1]} with a deviation of {deviation:.2f}")
+        assert 1.5 < deviation
 
 
 # Test session timestamp generation and spread
@@ -115,8 +130,9 @@ for log_windows_days in log_window_days_tests:
     assert sessions[0].start_datetime >= sdt
     # Latest session starts before the requested end
     assert sessions[-1].start_datetime <= edt
+    std_ts = sdt.timestamp()
     start_times = list(
-        (x.start_datetime.timestamp() - sdt.timestamp()) for x in sessions
+        (x.start_datetime.timestamp() - std_ts) for x in sessions
     )
     target_deviation_s = (
         (log_windows_days) * 24 * 60 * 60
@@ -126,3 +142,5 @@ for log_windows_days in log_window_days_tests:
         f"... session start time deviation is {deviation_s:.0f} and should be {target_deviation_s:.0f} which is factor difference of {deviation_s / target_deviation_s:.2f}"
     )
     assert 0.5 < (deviation_s / target_deviation_s) < 1.5
+
+
