@@ -78,20 +78,13 @@ for session_count in session_length_tests:
             print(
                 f"... we have {source_ip_count} unique source IPs, and should have around {ideal_source_count:.0f}"
             )
-            assert (
-                ideal_source_count * 0.5
-                < source_ip_count
-                < ideal_source_count * 1.5
-            )
+            assert ideal_source_count * 0.5 < source_ip_count < ideal_source_count * 1.5
             print(
                 f"... we have {source_user_count} unique users, and should have around {ideal_source_count:.0f}"
             )
             assert (
-                ideal_source_count * 0.5
-                < source_user_count 
-                < ideal_source_count * 1.5
+                ideal_source_count * 0.5 < source_user_count < ideal_source_count * 1.5
             )
-
 
 
 # Test session timestamp generation and spread
