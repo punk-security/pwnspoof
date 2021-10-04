@@ -11,11 +11,11 @@ import datetime
 
 
 def generate_sessions(
-    session_count=10,
+    app,
+    session_count=20,
     start_date="900821",
     end_date="900825",
     max_session_per_user=3,
-    app=apps.apps["banking"],
 ):
     sd = datetime.datetime.strptime(start_date, "%Y%m%d")
     ed = datetime.datetime.strptime(end_date, "%Y%m%d")
@@ -34,15 +34,21 @@ log_types = {
     "CLF": 10,
 }
 
-for application in apps.apps.values():
+for application in apps.apps.keys():
+    print(f"Testing {application}...")
     for log_type in log_types.keys():
+        print(f"... testing log type {log_type}")
         logs = []
         sh = SessionHandler()
-        for session in generate_sessions(app=application):
+        for session in generate_sessions(app=apps.apps[application]):
             sh.add_session(session)
+        print(f"...... got {len(sh.sessions)} sessions")
+        i = 0
         while sh.active_sessions:
             for log_entry in sh.iter(log_type):
+                i += 1
                 # Test each log line has the correct number of whitespace seperators
                 assert len(log_entry["log"].split(" ")) == log_types[log_type]
                 # Test each log line has no handlebars
                 assert "__" not in log_entry["log"]
+        print(f"...... tested {i} log lines")
