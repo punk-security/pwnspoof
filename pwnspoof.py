@@ -180,6 +180,7 @@ for x in range(0, args.spoofed_attacks):
         user_agent=attacker_user_agent,
         username=random.choice(sh.sessions).username,
         geo=args.attacker_geo,
+        app=apps[args.app],
     )
     sh.add_session(attack)
     attacker_sessions.append(attack)
