@@ -151,11 +151,13 @@ class Misc:
             max_period_between_invocations_s=3,
             min_period_between_invocations_s=1,
             count=randint(0, 300),
+            suppress_noise=True,
         ).add_interaction(interactions.dynamic.login_post_401)
         yield ActivityPattern(
             consecutive=True,
             max_period_between_invocations_s=3,
             min_period_between_invocations_s=1,
+            suppress_noise=True,
         ).add_interaction(interactions.dynamic.login_post_301)
 
     @staticmethod
@@ -171,13 +173,12 @@ class Misc:
             yield ActivityPattern(consecutive=True).add_interaction(
                 interactions.dynamic.faq_lfi
             )
-        # TODO: this should have noise suppression
-        yield ActivityPattern(count=(randint(4, 8))).add_interaction(
-            interactions.dynamic.cmd_injection_on_sticky_page_recon
-        )
-        yield ActivityPattern(count=(randint(1, 2))).add_interaction(
-            interactions.dynamic.cmd_injection_on_sticky_page_attack
-        )
+        yield ActivityPattern(
+            count=(randint(4, 8)), suppress_noise=True
+        ).add_interaction(interactions.dynamic.cmd_injection_on_sticky_page_recon)
+        yield ActivityPattern(
+            count=(randint(1, 2)), suppress_noise=True
+        ).add_interaction(interactions.dynamic.cmd_injection_on_sticky_page_attack)
 
 
 class Wordpress:
@@ -283,6 +284,7 @@ class Wordpress:
             max_period_between_invocations_s=3,
             min_period_between_invocations_s=1,
             count=randint(100, 300),
+            suppress_noise=True,
         ).add_interaction(interactions.dynamic.wp_admin_login_failed)
         # Login OK
         yield Wordpress.static_login_success
@@ -297,13 +299,12 @@ class Wordpress:
         # upload plugin a few times to try and get the backdoor
         for i in range(1, 5):
             yield Wordpress.static_add_plugin
-        # TODO: this should have noise suppression
-        yield ActivityPattern(count=(randint(4, 8))).add_interaction(
-            interactions.dynamic.cmd_injection_on_sticky_page_recon
-        )
-        yield ActivityPattern(count=(randint(1, 2))).add_interaction(
-            interactions.dynamic.cmd_injection_on_sticky_page_attack
-        )
+        yield ActivityPattern(
+            count=(randint(4, 8)), suppress_noise=True
+        ).add_interaction(interactions.dynamic.cmd_injection_on_sticky_page_recon)
+        yield ActivityPattern(
+            count=(randint(1, 2)), suppress_noise=True
+        ).add_interaction(interactions.dynamic.cmd_injection_on_sticky_page_attack)
 
 
 class Generic:
