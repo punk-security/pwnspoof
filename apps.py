@@ -20,6 +20,6 @@ generic = App("punksontour.local")
 generic.set_dynamic_activity_pattern(ap.Generic.dynamic_browse)
 generic.extension = ""
 generic.noise_interactions += ap.Generic.static_noise_success
-generic.attacks["bruteforce"] = ap.Generic.dynamic_bruteforce
-generic.attacks["command_injection"] = ap.Wordpress.dynamic_malicious_plugin
+generic.attacks["bruteforce"] = ap.Generic.dynamic_bruteforce_sensitive_files
+generic.attacks["command_injection"] = ap.Generic.dynamic_command_injection
 apps = {"banking": banking, "wordpress": wordpress, "generic": generic}

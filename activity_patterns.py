@@ -333,8 +333,7 @@ class Generic:
             yield Generic.static_page_success
 
     @staticmethod
-    def dynamic_bruteforce():
-        # TODO: Suppress noise
+    def dynamic_bruteforce_sensitive_files():
         Generic.old_loot_404.min_period_between_invocations_s = 0
         Generic.old_loot_404.max_period_between_invocations_s = 0
         b1 = copy(Generic.old_loot_404)
@@ -346,6 +345,12 @@ class Generic:
         yield b2
 
     def dynamic_command_injection():
-        return
-        # RFI with a random web addr to add a backdoor.php
-        # same as usual
+        yield ActivityPattern(count=5).add_interaction(
+                interactions.dynamic.faq_rfi
+            )
+        yield ActivityPattern(
+            count=(randint(4, 8)), suppress_noise=True
+        ).add_interaction(interactions.dynamic.cmd_injection_on_sticky_page_recon)
+        yield ActivityPattern(
+            count=(randint(1, 2)), suppress_noise=True
+        ).add_interaction(interactions.dynamic.cmd_injection_on_sticky_page_attack)

