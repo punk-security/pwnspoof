@@ -184,7 +184,7 @@ class Interaction(object):
     ):
         self.uri = uri.rstrip("?")
         if append_extension:
-            self.uri = f"{self.uri}.__app_extension__"
+            self.uri = f"{self.uri}__app_extension__"
         self.base_response_time_ms = base_response_time_ms
         self.response_time_deviation_ms = response_time_deviation_ms
         self.average_bytes = average_bytes

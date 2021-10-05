@@ -97,6 +97,13 @@ class generic:
         set_as_last=False,
         append_extension=False,
     )
+    old_loot_success = Interaction(
+        uri="__loot__.__backup_ext__", append_extension=False, set_as_last=False
+    )
+    old_loot_404 = Interaction(
+        uri="__loot__.__backup_ext__", append_extension=False, status_code=404, set_as_last=False
+    )
+
 
 
 class dynamic:
@@ -105,7 +112,7 @@ class dynamic:
     )
 
     index_seo_friendly_success = Interaction(
-        uri="index.__app_extension__/__rand_app_page_name__", append_extension=False
+        uri="index__app_extension__/__rand_app_page_name__", append_extension=False
     )
 
     xmlrpc_success = Interaction(uri="xmlrpc", method="POST", set_as_last=False)

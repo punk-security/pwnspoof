@@ -311,6 +311,13 @@ class Generic:
         interactions.generic.seo_friendly_success
     )
 
+    old_loot_success = ActivityPattern(consecutive=True).add_interaction(
+        interactions.generic.old_loot_success
+    )
+
+    old_loot_404 = ActivityPattern().add_interaction(
+        interactions.generic.old_loot_404
+    )
     static_noise_success = [interactions.generic.noise_sucess]
 
     @staticmethod
@@ -326,13 +333,17 @@ class Generic:
 
     @staticmethod
     def dynamic_bruteforce():
-        for x in range(1, randint(200, 600)):
-            pass
-            # Return a 404 against a random missing file - what is valuable?  .htaccess etc
-            # maybe need a loot list and a backup ext list
-        # Return a single success against something sensitive
+        #TODO: Suppress noise
+        Generic.old_loot_404.min_period_between_invocations_s = 0
+        Generic.old_loot_404.max_period_between_invocations_s = 0
+        b1 = copy(Generic.old_loot_404)
+        b2 = copy(Generic.old_loot_404)
+        b1.count = randint(100, 600)
+        b2.count = randint(100, 600)
+        yield b1
+        yield Generic.old_loot_success
+        yield b2
 
-    # Bruteforce (stolen creds by finding a file?)
     def dynamic_command_injection():
         return
         # RFI with a random web addr to add a backdoor.php
