@@ -311,11 +311,11 @@ class Generic:
         interactions.generic.seo_friendly_success
     )
 
-    old_loot_success = ActivityPattern(consecutive=True).add_interaction(
-        interactions.generic.old_loot_success
-    )
+    old_loot_success = ActivityPattern(
+        consecutive=True, suppress_noise=True
+    ).add_interaction(interactions.generic.old_loot_success)
 
-    old_loot_404 = ActivityPattern().add_interaction(
+    old_loot_404 = ActivityPattern(suppress_noise=True).add_interaction(
         interactions.generic.old_loot_404
     )
     static_noise_success = [interactions.generic.noise_sucess]
@@ -333,7 +333,7 @@ class Generic:
 
     @staticmethod
     def dynamic_bruteforce():
-        #TODO: Suppress noise
+        # TODO: Suppress noise
         Generic.old_loot_404.min_period_between_invocations_s = 0
         Generic.old_loot_404.max_period_between_invocations_s = 0
         b1 = copy(Generic.old_loot_404)

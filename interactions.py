@@ -101,9 +101,11 @@ class generic:
         uri="__loot__.__backup_ext__", append_extension=False, set_as_last=False
     )
     old_loot_404 = Interaction(
-        uri="__loot__.__backup_ext__", append_extension=False, status_code=404, set_as_last=False
+        uri="__loot__.__backup_ext__",
+        append_extension=False,
+        status_code=404,
+        set_as_last=False,
     )
-
 
 
 class dynamic:

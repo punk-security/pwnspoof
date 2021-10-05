@@ -116,7 +116,12 @@ class Session(object):
             self.next_iteration = None
         ### Yield noise
         # TODO: add noise suppression for api abuse
-        if resp != None and self.app.noise_interactions:
+        if (
+            resp != None
+            and self.app.noise_interactions
+            and self.activity_patterns[self.current_activity_pattern].suppress_noise
+            == False
+        ):
             for x in range(1, random.randint(2, 4)):
                 yield random.choice(self.app.noise_interactions)
         yield resp
@@ -131,6 +136,7 @@ class ActivityPattern(object):
         min_period_between_invocations_s=3,
         max_period_between_invocations_s=30,
         count=None,
+        suppress_noise=False,
     ):
         self.looping = looping
         self.consecutive = consecutive
@@ -138,6 +144,7 @@ class ActivityPattern(object):
         self.max_period_between_invocations_s = max_period_between_invocations_s
         self.interactions = []
         self.count = count
+        self.suppress_noise = suppress_noise
 
     def add_interaction(self, interaction):
         self.interactions.append(interaction)
