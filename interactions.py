@@ -88,6 +88,17 @@ class js:
     )
 
 
+class generic:
+    seo_friendly_success = Interaction(
+        uri="__rand_app_page_name__", append_extension=False
+    )
+    noise_sucess = Interaction(
+        uri="__rand_noise__",
+        set_as_last=False,
+        append_extension=False,
+    )
+
+
 class dynamic:
     login_success = Interaction(
         uri="login",

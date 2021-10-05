@@ -16,4 +16,10 @@ wordpress.attacks["bruteforce"] = ap.Wordpress.dynamic_brute_force
 wordpress.attacks["command_injection"] = ap.Wordpress.dynamic_malicious_plugin
 wordpress.extension = "php"
 
-apps = {"banking": banking, "wordpress": wordpress}
+generic = App("punksontour.local")
+generic.set_dynamic_activity_pattern(ap.Generic.dynamic_browse)
+generic.extension = ""
+generic.noise_interactions += ap.Generic.static_noise_success
+generic.attacks["bruteforce"] = ap.Wordpress.dynamic_brute_force
+generic.attacks["command_injection"] = ap.Wordpress.dynamic_malicious_plugin
+apps = {"banking": banking, "wordpress": wordpress, "generic": generic}

@@ -7,10 +7,14 @@ from copy import copy
 
 
 class SessionHandler(object):
-    def __init__(self):
+    def __init__(self, pages=None, noise=None):
         self.sessions = []
+        self.pages = pages
+        self.noise = noise
 
     def add_session(self, session):
+        session.pages = self.pages
+        session.noise = self.noise
         self.sessions.append(session)
 
     @property
@@ -42,6 +46,7 @@ class Session(object):
         username="-",
         theme=None,
         pages=None,
+        noise=None,
     ):
         if source_ip:
             self.source_ip = source_ip
@@ -69,6 +74,7 @@ class Session(object):
         self.geo = geo
         self.theme = theme
         self.pages = pages
+        self.noise = noise
 
     def trigger(self, datetime):
         self.last_uri = self.current_uri
@@ -111,7 +117,7 @@ class Session(object):
         ### Yield noise
         # TODO: add noise suppression for api abuse
         if resp != None and self.app.noise_interactions:
-            for x in range(1, 3):
+            for x in range(1, random.randint(2,4)):
                 yield random.choice(self.app.noise_interactions)
         yield resp
         return

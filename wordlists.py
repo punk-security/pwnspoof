@@ -1,3 +1,11 @@
+images_extensions = [
+    "jpg",
+    "jpeg",
+    "gif",
+    "png",
+    "svg",
+]
+
 common_css_files = [
     "blocks.min.css",
     "font-awesome.min.css",
@@ -18,9 +26,15 @@ common_js_files = [
     "slick.min.js",
     "jquery-migrate.min.js",
     "jquery.js",
-    "wp-embed.min.js",
-    "wp-emoji-release.min.js",
 ]
+
+common_image_files = [
+    "background",
+    "logo",
+]
+
+common_image_files = list(f"{x}.__rand_img_ext__" for x in common_image_files)
+noise = common_css_files + common_js_files + common_image_files
 
 colours = [
     "amber",
@@ -218,10 +232,12 @@ webpages = [
     "contactus",
     "download",
     "feeds",
+    "faq",
     "news",
     "products",
     "services",
     "social",
+    "sitemap",
     "vacancies",
     "view",
 ]

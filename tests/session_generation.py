@@ -6,7 +6,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
 from session_generator import SessionGenerator
 from models import ActivityPattern, SessionHandler
-from apps import banking
+from apps import banking, generic
 import datetime
 import numpy
 
@@ -36,7 +36,7 @@ def generate_sessions(
     ed = datetime.datetime.strptime(end_date, "%Y%m%d")
     return SessionGenerator(
         session_count,
-        banking,
+        generic,
         sd,
         ed,
         max_sessions_per_user=max_session_per_user,

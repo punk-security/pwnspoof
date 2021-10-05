@@ -83,6 +83,7 @@ class Misc:
     static_favico = ActivityPattern(consecutive=True).add_interaction(
         interactions.misc.favico_success
     )
+    # This noise needs to move out of here
     static_home_page = ActivityPattern(
         min_period_between_invocations_s=1, max_period_between_invocations_s=2, count=4
     ).add_interactions(
@@ -189,7 +190,7 @@ class Wordpress:
         interactions.dynamic.xmlrpc_success,
     ]
 
-    static_random_page = ActivityPattern(consecutive=True).add_interactions(
+    static_random_page = ActivityPattern(consecutive=True, count=1).add_interactions(
         [
             interactions.misc.wp_page_success,
             interactions.dynamic.index_seo_friendly_success,
@@ -244,7 +245,7 @@ class Wordpress:
             yield Misc.static_root
         if x_in_hundred_chance_of(x=6):
             yield Misc.static_favico
-        for i in range(3, 8):
+        for i in range(1, randint(3, 8)):
             yield Wordpress.static_random_page
 
     def dynamic_admin():
@@ -303,3 +304,35 @@ class Wordpress:
         yield ActivityPattern(count=(randint(1, 2))).add_interaction(
             interactions.dynamic.cmd_injection_on_sticky_page_attack
         )
+
+
+class Generic:
+    static_page_success = ActivityPattern(consecutive=True).add_interaction(
+        interactions.generic.seo_friendly_success
+    )
+
+
+
+    static_noise_success = [interactions.generic.noise_sucess]
+
+    @staticmethod
+    def dynamic_browse():
+        if x_in_hundred_chance_of(x=9):
+            # 9/10 chance of coming in via index page
+            yield Misc.static_root
+        if x_in_hundred_chance_of(x=6):
+            # 6/10 chance of fetching favico
+            yield Misc.static_favico
+        for i in range(1, randint(2, 12)):
+            yield Generic.static_page_success
+
+    @staticmethod
+    def dynamic_bruteforce():
+        for x in range(1,randint(200,600)):
+            # Return a 404 against a random missing file - what is valuable?  .htaccess etc
+                # maybe need a loot list and a backup ext list 
+        # Return a single success against something sensitive
+    # Bruteforce (stolen creds by finding a file?)
+    def dynamic_command_injection():
+        #RFI with a random web addr to add a backdoor.php
+        #same as usual
