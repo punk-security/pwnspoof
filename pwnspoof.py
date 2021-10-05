@@ -20,7 +20,7 @@ banner = """\
      /_/    \__,_/_/ /_/_/|_|/____/\___/\___/\__,_/_/  /_/\__/\__, /  
                                             PRESENTS         /____/  
 
-                         -- PWNSpoof v0.2.1 --
+                         -- PWNSpoof v0.2.2 --
   A spoof log generator to practice incident response and threat hunting!
         """
 
@@ -180,6 +180,7 @@ for x in range(0, args.spoofed_attacks):
         user_agent=attacker_user_agent,
         username=random.choice(sh.sessions).username,
         geo=args.attacker_geo,
+        app=apps[args.app],
     )
     sh.add_session(attack)
     attacker_sessions.append(attack)

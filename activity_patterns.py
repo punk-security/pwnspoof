@@ -16,18 +16,20 @@ def x_in_hundred_chance_of(x):
 class Banking:
     static_navigate_to_transactions = ActivityPattern(
         consecutive=True
-    ).add_interactions([interactions.php.account_status, interactions.php.transaction])
+    ).add_interactions(
+        [interactions.dynamic.account_status, interactions.dynamic.transaction]
+    )
     static_browse_transactions_short = ActivityPattern(count=5).add_interaction(
-        interactions.php.transaction
+        interactions.dynamic.transaction
     )
     static_browse_transactions = ActivityPattern().add_interaction(
-        interactions.php.transaction
+        interactions.dynamic.transaction
     )
     static_transfer = ActivityPattern(consecutive=True).add_interactions(
         [
-            interactions.php.transfer_get_success,
-            interactions.php.transfer_post_success,
-            interactions.php.transfer_complete_success,
+            interactions.dynamic.transfer_get_success,
+            interactions.dynamic.transfer_post_success,
+            interactions.dynamic.transfer_complete_success,
         ]
     )
 
@@ -111,33 +113,33 @@ class Misc:
     static_login = ActivityPattern(consecutive=True).add_interactions(
         [
             interactions.html.index_redirect,
-            interactions.php.login_success,
-            interactions.php.login_post_301,
+            interactions.dynamic.login_success,
+            interactions.dynamic.login_post_301,
         ]
     )
     static_password_reset = ActivityPattern(consecutive=True).add_interactions(
         [
-            interactions.php.change_password_get_success,
-            interactions.php.change_password_post_success,
-            interactions.php.account_status,
+            interactions.dynamic.change_password_get_success,
+            interactions.dynamic.change_password_post_success,
+            interactions.dynamic.account_status,
         ]
     )
     static_logout = ActivityPattern(consecutive=True).add_interaction(
-        interactions.php.logout_success
+        interactions.dynamic.logout_success
     )
     static_login_failed = ActivityPattern(
         consecutive=True, min_period_between_invocations_s=1
-    ).add_interaction(interactions.php.login_post_401)
+    ).add_interaction(interactions.dynamic.login_post_401)
 
     static_faq = ActivityPattern(consecutive=True).add_interaction(
-        interactions.php.faq_success
+        interactions.dynamic.faq_success
     )
 
     static_change_avatar = ActivityPattern(consecutive=True).add_interactions(
         [
-            interactions.php.account_status,
-            interactions.php.change_avatar_post_success,
-            interactions.php.account_status,
+            interactions.dynamic.account_status,
+            interactions.dynamic.change_avatar_post_success,
+            interactions.dynamic.account_status,
         ]
     )
 
@@ -148,12 +150,12 @@ class Misc:
             max_period_between_invocations_s=3,
             min_period_between_invocations_s=1,
             count=randint(0, 300),
-        ).add_interaction(interactions.php.login_post_401)
+        ).add_interaction(interactions.dynamic.login_post_401)
         yield ActivityPattern(
             consecutive=True,
             max_period_between_invocations_s=3,
             min_period_between_invocations_s=1,
-        ).add_interaction(interactions.php.login_post_301)
+        ).add_interaction(interactions.dynamic.login_post_301)
 
     @staticmethod
     def dynamic_cmd_injectiom():
@@ -166,14 +168,14 @@ class Misc:
         for i in range(1, 5):
             yield Misc.static_change_avatar
             yield ActivityPattern(consecutive=True).add_interaction(
-                interactions.php.faq_lfi
+                interactions.dynamic.faq_lfi
             )
         # TODO: this should have noise suppression
         yield ActivityPattern(count=(randint(4, 8))).add_interaction(
-            interactions.php.cmd_injection_on_sticky_page_recon
+            interactions.dynamic.cmd_injection_on_sticky_page_recon
         )
         yield ActivityPattern(count=(randint(1, 2))).add_interaction(
-            interactions.php.cmd_injection_on_sticky_page_attack
+            interactions.dynamic.cmd_injection_on_sticky_page_attack
         )
 
 
@@ -184,27 +186,27 @@ class Wordpress:
         interactions.js.wp_theme_versioned_success,
         interactions.js.wp_versioned_success,
         interactions.misc.wp_jpg_success,
-        interactions.php.xmlrpc_success,
+        interactions.dynamic.xmlrpc_success,
     ]
 
     static_random_page = ActivityPattern(consecutive=True).add_interactions(
         [
             interactions.misc.wp_page_success,
-            interactions.php.index_seo_friendly_success,
-            interactions.php.index_seo_friendly_success,
-            interactions.php.index_seo_friendly_success,
+            interactions.dynamic.index_seo_friendly_success,
+            interactions.dynamic.index_seo_friendly_success,
+            interactions.dynamic.index_seo_friendly_success,
         ]
     )
 
     static_login_page_success = ActivityPattern(consecutive=True).add_interaction(
-        interactions.php.wp_admin_login_page_success
+        interactions.dynamic.wp_admin_login_page_success
     )
 
     static_login_success = ActivityPattern(consecutive=True).add_interaction(
-        interactions.php.wp_admin_login_success
+        interactions.dynamic.wp_admin_login_success
     )
     static_login_failed = ActivityPattern(consecutive=True).add_interaction(
-        interactions.php.wp_admin_login_failed
+        interactions.dynamic.wp_admin_login_failed
     )
 
     static_admin_pages = ActivityPattern(
@@ -213,25 +215,25 @@ class Wordpress:
         count=10,
     ).add_interactions(
         [
-            interactions.php.wp_admin_update_success,
-            interactions.php.wp_admin_users_success,
-            interactions.php.wp_admin_plugins_success,
-            interactions.php.wp_admin_plugins_install_success,
-            interactions.php.wp_admin_health_success,
+            interactions.dynamic.wp_admin_update_success,
+            interactions.dynamic.wp_admin_users_success,
+            interactions.dynamic.wp_admin_plugins_success,
+            interactions.dynamic.wp_admin_plugins_install_success,
+            interactions.dynamic.wp_admin_health_success,
         ]
     )
 
     static_add_plugin = ActivityPattern(consecutive=True,).add_interactions(
         [
-            interactions.php.wp_admin_plugins_success,
-            interactions.php.wp_admin_plugins_install_post_success,
+            interactions.dynamic.wp_admin_plugins_success,
+            interactions.dynamic.wp_admin_plugins_install_post_success,
         ]
     )
 
     static_add_user = ActivityPattern(consecutive=True,).add_interactions(
         [
-            interactions.php.wp_admin_users_success,
-            interactions.php.wp_admin_users_post_success,
+            interactions.dynamic.wp_admin_users_success,
+            interactions.dynamic.wp_admin_users_post_success,
         ]
     )
 
@@ -280,7 +282,7 @@ class Wordpress:
             max_period_between_invocations_s=3,
             min_period_between_invocations_s=1,
             count=randint(100, 300),
-        ).add_interaction(interactions.php.wp_admin_login_failed)
+        ).add_interaction(interactions.dynamic.wp_admin_login_failed)
         # Login OK
         yield Wordpress.static_login_success
         yield Wordpress.static_admin_pages
@@ -296,8 +298,8 @@ class Wordpress:
             yield Wordpress.static_add_plugin
         # TODO: this should have noise suppression
         yield ActivityPattern(count=(randint(4, 8))).add_interaction(
-            interactions.php.cmd_injection_on_sticky_page_recon
+            interactions.dynamic.cmd_injection_on_sticky_page_recon
         )
         yield ActivityPattern(count=(randint(1, 2))).add_interaction(
-            interactions.php.cmd_injection_on_sticky_page_attack
+            interactions.dynamic.cmd_injection_on_sticky_page_attack
         )

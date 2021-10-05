@@ -35,7 +35,7 @@ class Session(object):
         start_datetime,
         activity_patterns,
         user_agent,
-        noise_interactions=[],
+        app,
         source_ip=None,
         geo="GB",
         duration_mins=30,
@@ -64,7 +64,7 @@ class Session(object):
         self.last_uri = "-"
         self.iter = 0
         self.authenticated = False
-        self.noise_interactions = noise_interactions
+        self.app = app
         self.stickystr = False
         self.geo = geo
         self.theme = theme
@@ -110,9 +110,9 @@ class Session(object):
             self.next_iteration = None
         ### Yield noise
         # TODO: add noise suppression for api abuse
-        if resp != None and self.noise_interactions:
+        if resp != None and self.app.noise_interactions:
             for x in range(1, 3):
-                yield random.choice(self.noise_interactions)
+                yield random.choice(self.app.noise_interactions)
         yield resp
         return
 
@@ -174,14 +174,17 @@ class Interaction(object):
         set_as_last=True,
         login=False,
         logout=False,
+        append_extension=True,
     ):
-        self.uri = uri
+        self.uri = uri.rstrip("?")
+        if append_extension:
+            self.uri = f"{self.uri}.__app_extension__"
         self.base_response_time_ms = base_response_time_ms
         self.response_time_deviation_ms = response_time_deviation_ms
         self.average_bytes = average_bytes
         self.deviation_bytes = deviation_bytes
         self.method = method
-        self.query = query
+        self.query = query.lstrip("?")
         self.referer = referer
         self.status_code = status_code
         self.port = port
@@ -211,6 +214,7 @@ class App(object):
         self.__activity_patterns = []
         self.attacks = {}
         self.noise_interactions = []
+        self.extension = "php"
 
     ## Activity Patterns
     def add_activity_pattern(self, ap):

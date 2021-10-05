@@ -241,7 +241,7 @@ def SessionGenerator(
             activity_patterns=activity_patterns,
             user_agent=random.choice(user_agents),
             username=username,
-            noise_interactions=app.noise_interactions,
+            app=app,
         )
         yield s1
         # Add additional user sessions
@@ -267,7 +267,7 @@ def SessionGenerator(
                     activity_patterns=activity_patterns,
                     user_agent=s1.user_agent,
                     username=username,
-                    noise_interactions=app.noise_interactions,
+                    app=app,
                 )
                 i += 1
         if i > num_sessions:

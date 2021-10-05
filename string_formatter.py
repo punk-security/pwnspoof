@@ -38,6 +38,8 @@ def handlebar_replace(string, session):
             string = replace_rand_two_words(string, session)
         if "__rand_app_page_name__" in string:
             string = replace_rand_app_page_name(string, session)
+        if "__app_extension__" in string:
+            string = replace_app_extension(string, session)
     return string
 
 
@@ -101,6 +103,10 @@ def replace_rand_two_words(param, session):
         ]
     )
     return param.replace("__rand_two_words__", rand_string)
+
+
+def replace_app_extension(param, session):
+    return param.replace("__app_extension__", session.app.extension)
 
 
 # Theme is run specific so store it here for convenience
