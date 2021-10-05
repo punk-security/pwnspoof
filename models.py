@@ -92,6 +92,7 @@ class Session(object):
             resp = self.activity_patterns[self.current_activity_pattern].iterate(
                 self.iter
             )
+            self.iter += 1
         if resp != None:
             # Format the URI here so the last uri is correct - have to copy otherwise we replace uri on the base interaction
             resp = copy(resp)
