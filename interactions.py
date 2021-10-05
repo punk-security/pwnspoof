@@ -92,6 +92,9 @@ class generic:
     seo_friendly_success = Interaction(
         uri="__rand_app_page_name__", append_extension=False
     )
+    seo_friendly_404 = Interaction(
+        uri="__rand_two_words__", set_as_last=False, status_code=404
+    )
     noise_sucess = Interaction(
         uri="__rand_noise__",
         set_as_last=False,

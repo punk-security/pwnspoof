@@ -48,6 +48,8 @@ def handlebar_replace(string, session):
             string = replace_backup_ext(string)
         if "__loot__" in string:
             string = replace_loot(string)
+        if "__dir__" in string:
+            string = replace_dir(string)
     return string
 
 
@@ -109,6 +111,13 @@ def replace_img_extension(param):
 
 def replace_backup_ext(param):
     return param.replace("__backup_ext__", random.choice(attacks.backup_extensions))
+
+
+def replace_dir(param):
+    dir = random.choice(attacks.dirs)
+    if dir != "":
+        dir = f"{dir}/"
+    return param.replace("__dir__", dir)
 
 
 def replace_loot(param):

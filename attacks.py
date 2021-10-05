@@ -25,6 +25,10 @@ command_recon = [
 loot = [
     ".htaccess",
     "auth__app_extension__",
+    "admin__app_extension__",
+    "login__app_extension__",
+    "settings__app_extension__",
+    "db__app_extension__",
     "passwords",
     "db_config",
     "config",
@@ -32,6 +36,21 @@ loot = [
     "db__app_extension__",
     "configuration",
     "admin__app_extension__",
+]
+
+dirs = [
+    "",
+    "../",
+    "../../",
+    "../../../",
+    "admin",
+    "old",
+    "backup",
+    "archives",
+    "1",
+    "2",
+    "3",
+    "4",
 ]
 
 backup_extensions = [

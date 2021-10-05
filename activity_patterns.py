@@ -312,6 +312,10 @@ class Generic:
         interactions.generic.seo_friendly_success
     )
 
+    static_page_404 = ActivityPattern(consecutive=True).add_interaction(
+        interactions.generic.seo_friendly_404
+    )
+
     old_loot_success = ActivityPattern(
         consecutive=True, suppress_noise=True
     ).add_interaction(interactions.generic.old_loot_success)
@@ -329,6 +333,9 @@ class Generic:
         if x_in_hundred_chance_of(x=6):
             # 6/10 chance of fetching favico
             yield Misc.static_favico
+        if x_in_hundred_chance_of(x=10):
+            yield Generic.static_page_404
+            yield Misc.static_root
         for i in range(1, randint(2, 12)):
             yield Generic.static_page_success
 
