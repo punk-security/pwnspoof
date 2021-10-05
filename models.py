@@ -117,7 +117,7 @@ class Session(object):
         ### Yield noise
         # TODO: add noise suppression for api abuse
         if resp != None and self.app.noise_interactions:
-            for x in range(1, random.randint(2,4)):
+            for x in range(1, random.randint(2, 4)):
                 yield random.choice(self.app.noise_interactions)
         yield resp
         return

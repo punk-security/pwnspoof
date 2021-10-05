@@ -311,8 +311,6 @@ class Generic:
         interactions.generic.seo_friendly_success
     )
 
-
-
     static_noise_success = [interactions.generic.noise_sucess]
 
     @staticmethod
@@ -328,11 +326,14 @@ class Generic:
 
     @staticmethod
     def dynamic_bruteforce():
-        for x in range(1,randint(200,600)):
+        for x in range(1, randint(200, 600)):
+            pass
             # Return a 404 against a random missing file - what is valuable?  .htaccess etc
-                # maybe need a loot list and a backup ext list 
+            # maybe need a loot list and a backup ext list
         # Return a single success against something sensitive
+
     # Bruteforce (stolen creds by finding a file?)
     def dynamic_command_injection():
-        #RFI with a random web addr to add a backdoor.php
-        #same as usual
+        return
+        # RFI with a random web addr to add a backdoor.php
+        # same as usual
