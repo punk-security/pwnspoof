@@ -83,6 +83,7 @@ class Misc:
     static_favico = ActivityPattern(consecutive=True).add_interaction(
         interactions.misc.favico_success
     )
+    # This noise needs to move out of here
     static_home_page = ActivityPattern(
         min_period_between_invocations_s=1, max_period_between_invocations_s=2, count=4
     ).add_interactions(
@@ -150,11 +151,13 @@ class Misc:
             max_period_between_invocations_s=3,
             min_period_between_invocations_s=1,
             count=randint(0, 300),
+            suppress_noise=True,
         ).add_interaction(interactions.dynamic.login_post_401)
         yield ActivityPattern(
             consecutive=True,
             max_period_between_invocations_s=3,
             min_period_between_invocations_s=1,
+            suppress_noise=True,
         ).add_interaction(interactions.dynamic.login_post_301)
 
     @staticmethod
@@ -170,13 +173,12 @@ class Misc:
             yield ActivityPattern(consecutive=True).add_interaction(
                 interactions.dynamic.faq_lfi
             )
-        # TODO: this should have noise suppression
-        yield ActivityPattern(count=(randint(4, 8))).add_interaction(
-            interactions.dynamic.cmd_injection_on_sticky_page_recon
-        )
-        yield ActivityPattern(count=(randint(1, 2))).add_interaction(
-            interactions.dynamic.cmd_injection_on_sticky_page_attack
-        )
+        yield ActivityPattern(
+            count=(randint(4, 8)), suppress_noise=True
+        ).add_interaction(interactions.dynamic.cmd_injection_on_sticky_page_recon)
+        yield ActivityPattern(
+            count=(randint(1, 2)), suppress_noise=True
+        ).add_interaction(interactions.dynamic.cmd_injection_on_sticky_page_attack)
 
 
 class Wordpress:
@@ -189,7 +191,7 @@ class Wordpress:
         interactions.dynamic.xmlrpc_success,
     ]
 
-    static_random_page = ActivityPattern(consecutive=True).add_interactions(
+    static_random_page = ActivityPattern(consecutive=True, count=1).add_interactions(
         [
             interactions.misc.wp_page_success,
             interactions.dynamic.index_seo_friendly_success,
@@ -244,7 +246,7 @@ class Wordpress:
             yield Misc.static_root
         if x_in_hundred_chance_of(x=6):
             yield Misc.static_favico
-        for i in range(3, 8):
+        for i in range(1, randint(3, 8)):
             yield Wordpress.static_random_page
 
     def dynamic_admin():
@@ -282,6 +284,7 @@ class Wordpress:
             max_period_between_invocations_s=3,
             min_period_between_invocations_s=1,
             count=randint(100, 300),
+            suppress_noise=True,
         ).add_interaction(interactions.dynamic.wp_admin_login_failed)
         # Login OK
         yield Wordpress.static_login_success
@@ -296,10 +299,56 @@ class Wordpress:
         # upload plugin a few times to try and get the backdoor
         for i in range(1, 5):
             yield Wordpress.static_add_plugin
-        # TODO: this should have noise suppression
-        yield ActivityPattern(count=(randint(4, 8))).add_interaction(
-            interactions.dynamic.cmd_injection_on_sticky_page_recon
-        )
-        yield ActivityPattern(count=(randint(1, 2))).add_interaction(
-            interactions.dynamic.cmd_injection_on_sticky_page_attack
-        )
+        yield ActivityPattern(
+            count=(randint(4, 8)), suppress_noise=True
+        ).add_interaction(interactions.dynamic.cmd_injection_on_sticky_page_recon)
+        yield ActivityPattern(
+            count=(randint(1, 2)), suppress_noise=True
+        ).add_interaction(interactions.dynamic.cmd_injection_on_sticky_page_attack)
+
+
+class Generic:
+    static_page_success = ActivityPattern(consecutive=True).add_interaction(
+        interactions.generic.seo_friendly_success
+    )
+
+    old_loot_success = ActivityPattern(
+        consecutive=True, suppress_noise=True
+    ).add_interaction(interactions.generic.old_loot_success)
+
+    old_loot_404 = ActivityPattern(suppress_noise=True).add_interaction(
+        interactions.generic.old_loot_404
+    )
+    static_noise_success = [interactions.generic.noise_sucess]
+
+    @staticmethod
+    def dynamic_browse():
+        if x_in_hundred_chance_of(x=9):
+            # 9/10 chance of coming in via index page
+            yield Misc.static_root
+        if x_in_hundred_chance_of(x=6):
+            # 6/10 chance of fetching favico
+            yield Misc.static_favico
+        for i in range(1, randint(2, 12)):
+            yield Generic.static_page_success
+
+    @staticmethod
+    def dynamic_bruteforce_sensitive_files():
+        Generic.old_loot_404.min_period_between_invocations_s = 0
+        Generic.old_loot_404.max_period_between_invocations_s = 0
+        b1 = copy(Generic.old_loot_404)
+        b2 = copy(Generic.old_loot_404)
+        b1.count = randint(100, 600)
+        b2.count = randint(100, 600)
+        yield b1
+        yield Generic.old_loot_success
+        yield b2
+
+    def dynamic_command_injection():
+        yield ActivityPattern(count=5).add_interaction(interactions.dynamic.faq_rfi)
+        yield ActivityPattern(
+            count=(randint(4, 8)), suppress_noise=True
+        ).add_interaction(interactions.dynamic.cmd_injection_on_sticky_page_recon)
+        yield ActivityPattern(
+            count=(randint(1, 2)), suppress_noise=True
+        ).add_interaction(interactions.dynamic.cmd_injection_on_sticky_page_attack)

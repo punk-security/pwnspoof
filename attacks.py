@@ -21,3 +21,33 @@ command_recon = [
     "cd ..",
     "netstat -peanut",
 ]
+
+loot = [
+    ".htaccess",
+    "auth__app_extension__",
+    "passwords",
+    "db_config",
+    "config",
+    "settings",
+    "db__app_extension__",
+    "configuration",
+    "admin__app_extension__",
+]
+
+backup_extensions = [
+    "copy",
+    "backup",
+    "txt",
+    "old",
+    "saved",
+    "older",
+    "copy.copy",
+    "bckp",
+    "archived",
+    "1",
+    "2",
+    "3",
+    "7z",
+    "zip",
+    "tgz",
+]

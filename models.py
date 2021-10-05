@@ -7,10 +7,14 @@ from copy import copy
 
 
 class SessionHandler(object):
-    def __init__(self):
+    def __init__(self, pages=None, noise=None):
         self.sessions = []
+        self.pages = pages
+        self.noise = noise
 
     def add_session(self, session):
+        session.pages = self.pages
+        session.noise = self.noise
         self.sessions.append(session)
 
     @property
@@ -42,6 +46,7 @@ class Session(object):
         username="-",
         theme=None,
         pages=None,
+        noise=None,
     ):
         if source_ip:
             self.source_ip = source_ip
@@ -69,6 +74,7 @@ class Session(object):
         self.geo = geo
         self.theme = theme
         self.pages = pages
+        self.noise = noise
 
     def trigger(self, datetime):
         self.last_uri = self.current_uri
@@ -110,8 +116,13 @@ class Session(object):
             self.next_iteration = None
         ### Yield noise
         # TODO: add noise suppression for api abuse
-        if resp != None and self.app.noise_interactions:
-            for x in range(1, 3):
+        if (
+            resp != None
+            and self.app.noise_interactions
+            and self.activity_patterns[self.current_activity_pattern].suppress_noise
+            == False
+        ):
+            for x in range(1, random.randint(2, 4)):
                 yield random.choice(self.app.noise_interactions)
         yield resp
         return
@@ -125,6 +136,7 @@ class ActivityPattern(object):
         min_period_between_invocations_s=3,
         max_period_between_invocations_s=30,
         count=None,
+        suppress_noise=False,
     ):
         self.looping = looping
         self.consecutive = consecutive
@@ -132,6 +144,7 @@ class ActivityPattern(object):
         self.max_period_between_invocations_s = max_period_between_invocations_s
         self.interactions = []
         self.count = count
+        self.suppress_noise = suppress_noise
 
     def add_interaction(self, interaction):
         self.interactions.append(interaction)
@@ -178,7 +191,7 @@ class Interaction(object):
     ):
         self.uri = uri.rstrip("?")
         if append_extension:
-            self.uri = f"{self.uri}.__app_extension__"
+            self.uri = f"{self.uri}__app_extension__"
         self.base_response_time_ms = base_response_time_ms
         self.response_time_deviation_ms = response_time_deviation_ms
         self.average_bytes = average_bytes

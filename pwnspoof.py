@@ -20,7 +20,7 @@ banner = """\
      /_/    \__,_/_/ /_/_/|_|/____/\___/\___/\__,_/_/  /_/\__/\__, /  
                                             PRESENTS         /____/  
 
-                         -- PWNSpoof v0.2.2 --
+                         -- PWNSpoof v0.3.0 --
   A spoof log generator to practice incident response and threat hunting!
         """
 
@@ -37,6 +37,7 @@ parser.add_argument(
     choices=[
         "banking",
         "wordpress",
+        "generic",
     ],
 )
 parser.add_argument(
@@ -83,6 +84,16 @@ log_generator_settings.add_argument(
     choices=["IIS", "NGINX", "CLF"],
     default="IIS",
     help="Server to spoof (default: %(default)s)",
+)
+log_generator_settings.add_argument(
+    "--uri-file",
+    type=str,
+    help="File containing web uris to override defaults, do not include extensions",
+)
+log_generator_settings.add_argument(
+    "--noise-file",
+    type=str,
+    help="File containing noise uris to override defaults, include extensions",
 )
 attack_settings = parser.add_argument_group("attack settings")
 attack_settings.add_argument(
@@ -140,6 +151,14 @@ else:
     sd = ed - dt.timedelta(days=14)
 
 sh = SessionHandler()
+# If args.uri_file, add uris to session handler
+if args.uri_file != None:
+    with open(args.uri_file) as f:
+        sh.pages = f.read().splitlines()
+# If args.noise_file, add noise to session handler
+if args.noise_file != None:
+    with open(args.noise_file) as f:
+        sh.noise = f.read().splitlines()
 
 x = 0
 y = 100 / args.session_count

