@@ -52,7 +52,7 @@ class LogGenerator(object):
             if "http" not in referer:
                 scheme = "https" if port == 443 else "http"
                 referer = "{scheme}://{server}/{uri}".format(
-                    scheme=scheme, server=LogGenerator.server_fqdn, uri=referer
+                    scheme=scheme, server=LogGenerator.server_fqdn, uri=referer.lstrip("/")
                 )
         # Uppercase method
         method = method.upper()
