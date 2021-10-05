@@ -345,9 +345,7 @@ class Generic:
         yield b2
 
     def dynamic_command_injection():
-        yield ActivityPattern(count=5).add_interaction(
-                interactions.dynamic.faq_rfi
-            )
+        yield ActivityPattern(count=5).add_interaction(interactions.dynamic.faq_rfi)
         yield ActivityPattern(
             count=(randint(4, 8)), suppress_noise=True
         ).add_interaction(interactions.dynamic.cmd_injection_on_sticky_page_recon)
