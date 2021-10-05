@@ -106,11 +106,14 @@ def replace_js_file(param):
 def replace_img_extension(param):
     return param.replace("__rand_img_ext__", random.choice(wordlists.images_extensions))
 
+
 def replace_backup_ext(param):
     return param.replace("__backup_ext__", random.choice(attacks.backup_extensions))
 
+
 def replace_loot(param):
     return param.replace("__loot__", random.choice(attacks.loot))
+
 
 def replace_rand_two_words(param):
     rand_string = "-".join(
@@ -126,7 +129,9 @@ def replace_app_extension(param, session):
     if session.app.extension == "":
         return param.replace("__app_extension__", "")
     else:
-        return param.replace("__app_extension__", f".{session.app.extension.lstrip('.')}")
+        return param.replace(
+            "__app_extension__", f".{session.app.extension.lstrip('.')}"
+        )
 
 
 def replace_rand_app_page_name(param, session):

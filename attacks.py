@@ -31,7 +31,7 @@ loot = [
     "settings",
     "db__app_extension__",
     "configuration",
-    "admin__app_extension__"
+    "admin__app_extension__",
 ]
 
 backup_extensions = [
