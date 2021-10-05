@@ -17,9 +17,9 @@ class misc:
     favico_success = Interaction(
         uri="favico.ico", set_as_last=False, append_extension=False
     )
-    root_success = Interaction(uri="", append_extension=False)
+    root_success = Interaction(uri="/", append_extension=False)
     wp_page_success = Interaction(
-        uri="", query="p=__rand_int__", append_extension=False
+        uri="/", query="p=__rand_int__", append_extension=False
     )
     wp_jpg_success = Interaction(
         uri="/var/www/wordpress/2021/0__rand_digit__/__rand_two_words__-1024x800.jpg",
@@ -98,10 +98,10 @@ class generic:
         append_extension=False,
     )
     old_loot_success = Interaction(
-        uri="__loot__.__backup_ext__", append_extension=False, set_as_last=False
+        uri="__dir____loot__.__backup_ext__", append_extension=False, set_as_last=False
     )
     old_loot_404 = Interaction(
-        uri="__loot__.__backup_ext__",
+        uri="__dir____loot__.__backup_ext__",
         append_extension=False,
         status_code=404,
         set_as_last=False,
