@@ -201,6 +201,9 @@ for x in range(0, args.spoofed_attacks):
         geo=args.attacker_geo,
         app=apps[args.app],
     )
+    # TODOL This should be a child class of Session
+    attack.attack_payloads = []
+    attack.chosen_attack_payloads = []
     sh.add_session(attack)
     attacker_sessions.append(attack)
 ## Generate and output
