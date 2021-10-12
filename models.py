@@ -132,7 +132,7 @@ class Session(object):
             "SOURCE IP": self.source_ip,
             "USER AGENT": f"{self.user_agent[0:80]}...",
             "START TIME": self.start_datetime,
-            "END TIME": self.end_datetime
+            "END TIME": self.end_datetime,
         }
         if self.stickystr:
             keys["UNIQUE STR"] = self.stickystr
