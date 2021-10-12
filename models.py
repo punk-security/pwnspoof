@@ -136,8 +136,11 @@ class Session(object):
         }
         if self.stickystr:
             keys["UNIQUE STR"] = self.stickystr
-        if hasattr(self, 'chosen_attack_payloads') and len(self.chosen_attack_payloads) != 0:    
-            for x in range(0,len(self.chosen_attack_payloads)):
+        if (
+            hasattr(self, "chosen_attack_payloads")
+            and len(self.chosen_attack_payloads) != 0
+        ):
+            for x in range(0, len(self.chosen_attack_payloads)):
                 keys[f"ATTACK {x}"] = self.chosen_attack_payloads[x]
         ret = f"{margin}+======"
         for key in keys.keys():
