@@ -115,8 +115,6 @@ class Session(object):
         )
         if self.next_iteration > self.end_datetime:
             self.next_iteration = None
-        ### Yield noise
-        # TODO: add noise suppression for api abuse
         if (
             resp != None
             and self.app.noise_interactions
@@ -127,6 +125,24 @@ class Session(object):
                 yield random.choice(self.app.noise_interactions)
         yield resp
         return
+
+    def __repr__(self):
+        margin = " " * 6
+        keys = {
+            "SOURCE IP": self.source_ip,
+            "USER AGENT": f"{self.user_agent[0:80]}...",
+            "START TIME": self.start_datetime,
+            "END TIME": self.end_datetime
+        }
+        if self.stickystr:
+            keys["UNIQUE STR"] = self.stickystr
+        ret = f"{margin}+======"
+        for key in keys.keys():
+            ret += "\n"
+            ret += f"{margin}| {key:20s}: {keys[key]}"
+
+        ret += f"\n{margin}+====="
+        return ret
 
 
 class ActivityPattern(object):
