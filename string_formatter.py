@@ -29,7 +29,9 @@ def handlebar_replace(string, session):
         if "__rand_cmd_attack__" in string:
             string = replace_cmd_attack(string)
         if "__rand_geo_ip__" in string:
-            string = replace_ip(string, session)
+            string = replace_rand_geo_ip(string, session)
+        if "__session_ip__" in string:
+            string = replace_session_ip(string, session)
         if "__rand_sticky_str__" in string:
             string = replace_sticky_str(string, session)
         if "__theme__" in string:
@@ -87,8 +89,12 @@ def replace_cmd_attack(param):
     return parse.quote_plus(payload)
 
 
-def replace_ip(param, session):
+def replace_rand_geo_ip(param, session):
     return param.replace("__rand_geo_ip__", IPHandler.get_random_ip(session.geo))
+
+
+def replace_session_ip(param, session):
+    return param.replace("__session_ip__", session.source_ip)
 
 
 def replace_sticky_str(param, session):
