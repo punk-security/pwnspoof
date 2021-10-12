@@ -225,7 +225,7 @@ Logfile.flush()
 Logfile.close()
 print("Thats all Folks!")
 
-print("-----------------------------------")  #
-attacker_ips = [x.source_ip for x in attacker_sessions]
 if args.iocs:
-    print("ATTACKER_IPS: {}".format(attacker_ips))
+    print("---------------iocs---------------")  #
+    for attack in attacker_sessions:
+        print(attack)
