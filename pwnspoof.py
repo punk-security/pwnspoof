@@ -173,8 +173,7 @@ for session in SessionGenerator(
     max_sessions_per_user=args.max_sessions_per_user,
 ):
     sh.add_session(session)
-    print(" {:.2f}% ".format(y * x), end="", flush=True)
-    print("\b\b\b\b\b\b\b\b\b\b".format(y * x), end="", flush=True)
+    print("{:6.2f}% ".format(y * x), end="\r", flush=True)
     x += 1
 print(" Done!    ")
 
@@ -217,9 +216,7 @@ logs = []
 while sh.active_sessions:
     for log in sh.iter(args.server_type):
         logs.append(log)
-    print(" {:.2f}% ".format(100 - (y * len(sh.active_sessions))), end="", flush=True)
-    print("\b\b\b\b\b\b\b\b\b\b", end="", flush=True)
-
+    print("{:6.2f}% ".format(100 - (y * len(sh.active_sessions))), end="\r", flush=True)
 print("Writing the logs to '{}'".format(args.out))
 sorted_logs = sorted(logs, key=lambda x: x["datetime"], reverse=False)
 [print(log["log"], file=Logfile) for log in sorted_logs]
