@@ -201,6 +201,9 @@ for x in range(0, args.spoofed_attacks):
         geo=args.attacker_geo,
         app=apps[args.app],
     )
+    # TODOL This should be a child class of Session
+    attack.attack_payloads = []
+    attack.chosen_attack_payloads = []
     sh.add_session(attack)
     attacker_sessions.append(attack)
 ## Generate and output
@@ -225,7 +228,7 @@ Logfile.flush()
 Logfile.close()
 print("Thats all Folks!")
 
-print("-----------------------------------")  #
-attacker_ips = [x.source_ip for x in attacker_sessions]
 if args.iocs:
-    print("ATTACKER_IPS: {}".format(attacker_ips))
+    print("---------------iocs---------------")  #
+    for attack in attacker_sessions:
+        print(attack)
