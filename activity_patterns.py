@@ -39,11 +39,9 @@ class Banking:
         gohome.count = randint(2, 8)
         yield gohome
         yield Misc.static_home_page
-        if randint(0, 19) == 0:
-            # 1 in twenty chance of faq
+        if one_in_x_chance_of(15):
             yield Misc.static_faq
-        if randint(0, 9) == 0:
-            # 1 in ten chance of wrong password
+        if one_in_x_chance_of(10):
             for i in range(0, randint(1, 3)):
                 yield Misc.static_login_failed
         yield Misc.static_login
@@ -51,17 +49,13 @@ class Banking:
         browse = copy(Banking.static_browse_transactions)
         browse.count = randint(1, 6)
         yield browse
-        if randint(0, 6) == 0:
-            # if we roll a 6, do a tx
+        if one_in_x_chance_of(6):
             yield Banking.static_transfer
-        if randint(0, 49) == 0:
-            # 1 in 50 chance of password reset
+        if one_in_x_chance_of(20):
             yield Misc.static_password_reset
-        if randint(0, 99) == 0:
-            #    # 1 in 100 chance of password reset
+        if one_in_x_chance_of(50):
             yield Misc.static_change_avatar
-        if randint(0, 3) == 0:
-            # 1 if 4 chance of logging out
+        if one_in_x_chance_of(3):
             yield Misc.static_logout
 
     @staticmethod
@@ -83,20 +77,8 @@ class Misc:
     static_favico = ActivityPattern(consecutive=True).add_interaction(
         interactions.misc.favico_success
     )
-    # This noise needs to move out of here
-    static_home_page = ActivityPattern(
-        min_period_between_invocations_s=1, max_period_between_invocations_s=2, count=4
-    ).add_interactions(
-        [
-            interactions.html.index_success,
-            interactions.html.index_success,
-            interactions.misc.favico_success,
-            interactions.css.main_success,
-            interactions.css.template_success,
-            interactions.css.footer_success,
-            interactions.css.rand_success,
-            interactions.css.rand_not_found,
-        ]
+    static_home_page = ActivityPattern(consecutive=True).add_interaction(
+        interactions.dynamic.index_success
     )
     noise = [
         interactions.misc.favico_success,
@@ -109,11 +91,11 @@ class Misc:
         interactions.css.rand_not_found,
     ]
     static_login_page = ActivityPattern(consecutive=True).add_interaction(
-        interactions.html.index_redirect
+        interactions.dynamic.index_redirect
     )
     static_login = ActivityPattern(consecutive=True).add_interactions(
         [
-            interactions.html.index_redirect,
+            interactions.dynamic.index_redirect,
             interactions.dynamic.login_success,
             interactions.dynamic.login_post_301,
         ]

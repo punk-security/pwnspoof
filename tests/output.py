@@ -28,15 +28,28 @@ def generate_sessions(
 
 
 log_types = {
-    "NGINX": 12,
-    "IIS": 15,
-    "CLF": 10,
+    "NGINX": {"field_count": 12, "uri_offset": 6},
+    "IIS": {"field_count": 15, "uri_offset": 4},
+    "CLF": {"field_count": 10, "uri_offset": 6},
 }
+
+
+def has_double_extension(log_line, uri_offset):
+    uri = log_line.split(" ")[uri_offset]
+    if "?" in uri:
+        # If we have params, drop them
+        uri = uri.split("?")[0]
+    try:
+        return uri.split(".")[-1] == uri.split(".")[-2]
+    except:
+        return False
+
 
 for application in apps.apps.keys():
     print(f"Testing {application}...")
     for log_type in log_types.keys():
         print(f"... testing log type {log_type}")
+        log_uri_offset = 6
         logs = []
         sh = SessionHandler()
         for session in generate_sessions(app=apps.apps[application]):
@@ -47,7 +60,14 @@ for application in apps.apps.keys():
             for log_entry in sh.iter(log_type):
                 i += 1
                 # Test each log line has the correct number of whitespace seperators
-                assert len(log_entry["log"].split(" ")) == log_types[log_type]
+                assert (
+                    len(log_entry["log"].split(" "))
+                    == log_types[log_type]["field_count"]
+                )
                 # Test each log line has no handlebars
                 assert "__" not in log_entry["log"]
+                # Teast eah log line has no double extensions
+                assert not has_double_extension(
+                    log_entry["log"], log_types[log_type]["uri_offset"]
+                ), f"This log entry contains a double extension {log_entry['log']}"
         print(f"...... tested {i} log lines")
