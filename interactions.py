@@ -1,18 +1,6 @@
 from models import Interaction
 
 
-class html:
-    index_success = Interaction(
-        uri="index.html",
-        append_extension=False,
-    )
-    index_redirect = Interaction(
-        uri="index.html",
-        append_extension=False,
-        status_code=302,
-    )
-
-
 class misc:
     favico_success = Interaction(
         uri="favico.ico", set_as_last=False, append_extension=False
@@ -115,6 +103,10 @@ class dynamic:
     login_success = Interaction(
         uri="login",
     )
+
+    index_success = Interaction(uri="index")
+
+    index_redirect = Interaction(uri="index", status_code=301)
 
     index_seo_friendly_success = Interaction(
         uri="index__app_extension__/__rand_app_page_name__", append_extension=False

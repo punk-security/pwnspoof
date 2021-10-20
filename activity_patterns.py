@@ -83,20 +83,8 @@ class Misc:
     static_favico = ActivityPattern(consecutive=True).add_interaction(
         interactions.misc.favico_success
     )
-    # This noise needs to move out of here
-    static_home_page = ActivityPattern(
-        min_period_between_invocations_s=1, max_period_between_invocations_s=2, count=4
-    ).add_interactions(
-        [
-            interactions.html.index_success,
-            interactions.html.index_success,
-            interactions.misc.favico_success,
-            interactions.css.main_success,
-            interactions.css.template_success,
-            interactions.css.footer_success,
-            interactions.css.rand_success,
-            interactions.css.rand_not_found,
-        ]
+    static_home_page = ActivityPattern(consecutive=True).add_interaction(
+        interactions.dynamic.index_success
     )
     noise = [
         interactions.misc.favico_success,
@@ -109,11 +97,11 @@ class Misc:
         interactions.css.rand_not_found,
     ]
     static_login_page = ActivityPattern(consecutive=True).add_interaction(
-        interactions.html.index_redirect
+        interactions.dynamic.index_redirect
     )
     static_login = ActivityPattern(consecutive=True).add_interactions(
         [
-            interactions.html.index_redirect,
+            interactions.dynamic.index_redirect,
             interactions.dynamic.login_success,
             interactions.dynamic.login_post_301,
         ]
