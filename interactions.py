@@ -51,16 +51,16 @@ class css:
         uri="__rand_str__.css", set_as_last=False, append_extension=False
     )
     common_success = Interaction(
-        uri="__rand_css_file__.css", set_as_last=False, append_extension=False
+        uri="__rand_css_file__", set_as_last=False, append_extension=False
     )
     wp_theme_versioned_success = Interaction(
-        uri="wp-content/themes/__theme__/assets/css/__rand_css_file__.css",
+        uri="wp-content/themes/__theme__/assets/css/__rand_css_file__",
         query="ver=__rand_digit__.__rand_digit__.__rand_int__",
         set_as_last=False,
         append_extension=False,
     )
     wp_versioned_success = Interaction(
-        uri="wp-includes/css/dist/block-library/__rand_css_file__.css",
+        uri="wp-includes/css/dist/block-library/__rand_css_file__",
         query="ver=__rand_digit__.__rand_digit__.__rand_int__",
         set_as_last=False,
         append_extension=False,
@@ -75,13 +75,13 @@ class js:
         append_extension=False,
     )
     wp_theme_versioned_success = Interaction(
-        uri="wp-content/themes/__theme__/assets/js/__rand_js_file__.css",
+        uri="wp-content/themes/__theme__/assets/js/__rand_js_file__",
         query="ver=__rand_digit__.__rand_digit__.__rand_int__",
         set_as_last=False,
         append_extension=False,
     )
     wp_versioned_success = Interaction(
-        uri="wp-includes/js/__rand_js_file__.js",
+        uri="wp-includes/js/__rand_js_file__",
         query="ver=__rand_digit__.__rand_digit__.__rand_int__",
         set_as_last=False,
         append_extension=False,
