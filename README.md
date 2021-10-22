@@ -27,8 +27,6 @@ Can you find the attacker session and build the incident picture?
 
 ## About The Project
 
-[![product-screenshot](/images/product.png)](#About-The-Project)
-
 pwnSpoof was created on the back of a threat hunting training exercise [Punk Security](https://punksecurity.co.uk) delivered for a customer.  The training exercise was to use a log analytic tool such as Splunk (other log analysing tools are available) and IIS logs to find login brute-force attacks and command injections.
 
 The idea behind the pwnSpoof application is to;
@@ -55,6 +53,15 @@ The following will explain how to get started with pwnSpoof
 
 pwnSpoof is written in python and is tested with python3.   No extra modules are needed, we only use the standard library.
 
+If you get the following error message, please specifiy python3 when running pwnSpoof.  Python2 is not supported.
+
+```
+  File "pwnspoof.py", line 176
+    print("{:6.2f}% ".format(y * x), end="\r", flush=True)
+                                        ^
+SyntaxError: invalid syntax
+```
+
 ### Installation
 
 1. Git clone the pwnSpoof repo
@@ -80,7 +87,8 @@ python pwnspoof.py --help
 
 ```
 positional arguments:
-  {banking,wordpress}   App to emulate
+  {banking,wordpress,generic}
+                        App to emulate
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -102,6 +110,9 @@ log generator settings:
                         Override the emulated web apps randomised IP
   --server-type {IIS,NGINX,CLF}
                         Server to spoof (default: IIS)
+  --uri-file URI_FILE   File containing web uris to override defaults, do not include extensions
+  --noise-file NOISE_FILE
+                        File containing noise uris to override defaults, include extensions
 
 attack settings:
   --spoofed-attacks SPOOFED_ATTACKS
