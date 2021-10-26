@@ -1,0 +1,35 @@
+name: python version testing
+on: [pull_request]
+jobs:
+  v3-6:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Python runtime test
+        uses: ./.github/actions/python-test
+        with:
+          python-version: 3.6
+  v3-7:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Python runtime test
+        uses: ./.github/actions/python-test
+        with:
+          python-version: 3.7
+  v3-8:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Python runtime test
+        uses: ./.github/actions/python-test
+        with:
+          python-version: 3.8
+  v3-9:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Python runtime test
+        uses: ./.github/actions/python-test
+        with:
+          python-version: 3.9
