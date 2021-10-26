@@ -1,4 +1,4 @@
-name: python version testing
+name: python3 functional testing
 on: [pull_request]
 jobs:
   v3-6:
