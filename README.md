@@ -1,6 +1,9 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/punk-security/pwnspoof/graphs/commit-activity)
 [![Maintaner](https://img.shields.io/badge/maintainer-PunkSecurity-blue)](https://www.punksecurity.co.uk)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=punk-security_pwnspoof&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=punk-security_pwnspoof)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=punk-security_pwnspoof&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=punk-security_pwnspoof)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=punk-security_pwnspoof&metric=bugs)](https://sonarcloud.io/summary/new_code?id=punk-security_pwnspoof)
 
 [![Logo](/images/banner.png)](#)
 
