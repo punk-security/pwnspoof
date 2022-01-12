@@ -230,7 +230,7 @@ class Wordpress:
             yield Misc.static_favico
         for i in range(1, randint(3, 8)):
             yield Wordpress.static_random_page
-
+    @staticmethod
     def dynamic_admin():
         if x_in_hundred_chance_of(x=50):
             # 5/10 chance of arriving via root
@@ -252,7 +252,7 @@ class Wordpress:
         if x_in_hundred_chance_of(x=20):
             yield Wordpress.static_add_plugin
             return
-
+    @staticmethod
     def dynamic_browse_or_admin():
         if x_in_hundred_chance_of(x=5):
             pattern = Wordpress.dynamic_admin
@@ -272,7 +272,7 @@ class Wordpress:
         yield Wordpress.static_login_success
         yield Wordpress.static_admin_pages
         yield Wordpress.static_add_user
-
+    @staticmethod
     def dynamic_malicious_plugin():
         # Login
         yield Wordpress.static_login_page_success
@@ -333,6 +333,7 @@ class Generic:
         yield Generic.old_loot_success
         yield b2
 
+    @staticmethod
     def dynamic_command_injection():
         yield ActivityPattern(count=5).add_interaction(interactions.dynamic.faq_rfi)
         yield ActivityPattern(
