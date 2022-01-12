@@ -263,6 +263,7 @@ class Wordpress:
         for i in pattern():
             yield i
 
+    @staticmethod
     def dynamic_brute_force():
         yield ActivityPattern(
             max_period_between_invocations_s=3,
