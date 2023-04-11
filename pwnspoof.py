@@ -81,7 +81,7 @@ log_generator_settings.add_argument(
 log_generator_settings.add_argument(
     "--server-type",
     type=str,
-    choices=["IIS", "NGINX", "CLF"],
+    choices=["IIS", "NGINX", "CLF", "CLOUDFLARE", "AWS"],
     default="IIS",
     help="Server to spoof (default: %(default)s)",
 )
@@ -200,7 +200,7 @@ for x in range(0, args.spoofed_attacks):
         geo=args.attacker_geo,
         app=apps[args.app],
     )
-    # TODOL This should be a child class of Session
+    # TODO: This should be a child class of Session
     attack.attack_payloads = []
     attack.chosen_attack_payloads = []
     sh.add_session(attack)

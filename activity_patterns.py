@@ -207,14 +207,18 @@ class Wordpress:
         ]
     )
 
-    static_add_plugin = ActivityPattern(consecutive=True,).add_interactions(
+    static_add_plugin = ActivityPattern(
+        consecutive=True,
+    ).add_interactions(
         [
             interactions.dynamic.wp_admin_plugins_success,
             interactions.dynamic.wp_admin_plugins_install_post_success,
         ]
     )
 
-    static_add_user = ActivityPattern(consecutive=True,).add_interactions(
+    static_add_user = ActivityPattern(
+        consecutive=True,
+    ).add_interactions(
         [
             interactions.dynamic.wp_admin_users_success,
             interactions.dynamic.wp_admin_users_post_success,

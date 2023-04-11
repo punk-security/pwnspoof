@@ -111,7 +111,7 @@ log generator settings:
                         Override the emulated web apps default fqdn
   --server-ip SERVER_IP
                         Override the emulated web apps randomised IP
-  --server-type {IIS,NGINX,CLF}
+  --server-type {IIS,NGINX,CLF,CLOUDFLARE,AWS}
                         Server to spoof (default: IIS)
   --uri-file URI_FILE   File containing web uris to override defaults, do not include extensions
   --noise-file NOISE_FILE
