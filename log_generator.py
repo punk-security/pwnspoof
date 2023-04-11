@@ -24,7 +24,7 @@ class LogGenerator(object):
         "NGINX": '{source_ip} - {username} {datetime} "{method} {uri_with_query} HTTP/1.1" {status_code} {size} "{referer}" "{user_agent}"',
         "CLF": '{source_ip} - {username} {datetime} "{method} {uri_with_query} HTTP/1.1" {status_code} {size}',
         "CLOUDFLARE":'{{"ClientIP": "{source_ip}", "ClientRequestHost": "{fqdn}", "ClientRequestMethod": "{method}", "ClientRequestURI": "{uri}", "ClientRequestUserAgent":"{user_agent}", "EdgeEndTimestamp": "{datetime}", "EdgeResponseBytes": {size}, "EdgeResponseStatus": {status_code}, "EdgeStartTimestamp": "{datetime}", "RayID": "{ray_id}",  "RequestHeaders":{{"cf-access-user":"{username}"}}}}',
-        "AWS": '{referer} {datetime} app/my-loadbalancer/50dc6c495c0c9188 {source_ip}:2817 {server_ip}:{port} 0.000 0.001 0.000 {status_code} {status_code} {size} {sent_size} "{method} {fqdn} HTTP/1.1" "{user_agent}" {https_cipher} {https_protocol} arn:aws:elasticloadbalancing:us-east-2:123456789012:targetgroup/my-targets/73e2d6bc24d8a067"Root=1-58337262-36d228ad5d99923122bbe354" "-" "-" 0 {datetime} "forward" "-" "-" "{server_ip}:{port}" "{status_code_list}" "-" "-"'
+        "AWS": '{referer} {datetime} app/my-loadbalancer/50dc6c495c0c9188 {source_ip}:2817 {server_ip}:{port} 0.000 0.001 0.000 {status_code} {status_code} {size} {sent_size} "{method} {fqdn} HTTP/1.1" "{user_agent}" {https_cipher} {https_protocol} arn:aws:elasticloadbalancing:us-east-2:123456789012:targetgroup/my-targets/73e2d6bc24d8a067 "Root=1-58337262-36d228ad5d99923122bbe354" "-" "-" 0 {datetime} "forward" "-" "-" "{server_ip}:{port}" "{status_code_list}" "-" "-"'
     }
 
     log_timeformat = {
