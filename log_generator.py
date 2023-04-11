@@ -53,25 +53,21 @@ class LogGenerator(object):
         win32_status=0,
         time_taken=20,
         source_port = None,
-        ray_id = None,
         sent_size = None,
-        status_code_list = "-",
-        https_cipher = "-",
-        https_protocol = "-",
     ):
         # Format timestamp
-        geo = "US"
         if LogGenerator.server_ip == None:
-            LogGenerator.server_ip = IPHandler.get_random_ip(geo=geo)
+            LogGenerator.server_ip = IPHandler.get_random_ip(geo="US")
         if LogGenerator.server_fqdn == None:
             LogGenerator.server_fqdn = LogGenerator.server_ip
 
         # AWS elb access logs
-        if status_code == 200:
-            status_code_list = status_code
         if port == 443:
             https_cipher = "ECDHE-RSA-AES128-GCM-SHA256"
             https_protocol = "TLSv1.2"
+        else:
+            https_cipher = "-"
+            https_protocol = "-"
 
         # Set Referer
         if referer != "-":
@@ -83,13 +79,12 @@ class LogGenerator(object):
                     uri=referer.lstrip("/"),
                 )
 
-        if source_port == None:
-            source_port = random.randint(1025, 65535)
-        
-        if ray_id == None:
-            ray_id = '%030x' % random.randrange(16**30)
+        ray_id = '%030x' % random.randrange(16**30)
 
         if source_port == None:
+            source_port = random.randint(1025, 65535)
+
+        if sent_size == None:
             sent_size = random.randint(16, 1024)
         
         # Uppercase method
@@ -109,7 +104,6 @@ class LogGenerator(object):
             username=username,
             query=query,
             status_code=status_code,
-            country_code=geo,
             substatus=substatus,
             win32_status=win32_status,
             time_taken=time_taken,
@@ -118,7 +112,7 @@ class LogGenerator(object):
             ray_id=ray_id,
             source_port=source_port,
             sent_size=sent_size,
-            status_code_list=status_code_list,
+            status_code_list="200",
             https_cipher=https_cipher,
             https_protocol=https_protocol,
         )
