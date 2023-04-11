@@ -24,7 +24,7 @@ class LogGenerator(object):
         "NGINX": '{source_ip} - {username} {datetime} "{method} {uri_with_query} HTTP/1.1" {status_code} {size} "{referer}" "{user_agent}"',
         "CLF": '{source_ip} - {username} {datetime} "{method} {uri_with_query} HTTP/1.1" {status_code} {size}',
         "CLOUDFLARE":'{{"ClientIP": "{source_ip}", "ClientRequestHost": "{fqdn}", "ClientRequestMethod": "{method}", "ClientRequestURI": "{uri}", "ClientRequestUserAgent":"{user_agent}", "EdgeEndTimestamp": "{datetime}", "EdgeResponseBytes": {size}, "EdgeResponseStatus": {status_code}, "EdgeStartTimestamp": "{datetime}", "RayID": "{ray_id}",  "RequestHeaders":{{"cf-access-user":"{username}"}}}}',
-        "AWS": '{referer} {datetime} app/my-loadbalancer/50dc6c495c0c9188 {source_ip}:2817 {server_ip}:{port} 0.000 0.001 0.000 {status_code} {status_code} {size} {sent_size} "{method} {fqdn} HTTP/1.1" "{user_agent}" {https_cipher} {https_protocol} arn:aws:elasticloadbalancing:us-east-2:123456789012:targetgroup/my-targets/73e2d6bc24d8a067 "Root=1-58337262-36d228ad5d99923122bbe354" "-" "-" 0 {datetime} "forward" "-" "-" "{server_ip}:{port}" "{status_code_list}" "-" "-"'
+        "AWS": '{scheme} {datetime} app/my-loadbalancer/50dc6c495c0c9188 {source_ip}:{port} {server_ip}:{port} 0.000 0.001 0.000 {status_code} {status_code} {size} {sent_size} "{method} {scheme}://{fqdn}/{uri_with_query}:{port}/ HTTP/1.1" "{user_agent}" {https_cipher} {https_protocol} arn:aws:elasticloadbalancing:us-east-2:123456789012:targetgroup/my-targets/73e2d6bc24d8a067 "Root=1-58337262-36d228ad5d99923122bbe354" "{https_url}" "{https_cert}" 0 {datetime} "forward" "-" "-" "{server_ip}:{port}" "{status_code_list}" "-" "-"'
     }
 
     log_timeformat = {
@@ -52,7 +52,6 @@ class LogGenerator(object):
         substatus=0,
         win32_status=0,
         time_taken=20,
-        source_port = None,
         sent_size = None,
     ):
         # Format timestamp
@@ -60,14 +59,7 @@ class LogGenerator(object):
             LogGenerator.server_ip = IPHandler.get_random_ip(geo="US")
         if LogGenerator.server_fqdn == None:
             LogGenerator.server_fqdn = LogGenerator.server_ip
-
-        # AWS elb access logs
-        if port == 443:
-            https_cipher = "ECDHE-RSA-AES128-GCM-SHA256"
-            https_protocol = "TLSv1.2"
-        else:
-            https_cipher = "-"
-            https_protocol = "-"
+        
 
         # Set Referer
         if referer != "-":
@@ -78,21 +70,30 @@ class LogGenerator(object):
                     server=LogGenerator.server_fqdn,
                     uri=referer.lstrip("/"),
                 )
+        else:
+            scheme = "https"
 
-        ray_id = '%030x' % random.randrange(16**30)
-
-        if source_port == None:
-            source_port = random.randint(1025, 65535)
-
-        if sent_size == None:
-            sent_size = random.randint(16, 1024)
+        ray_id = '%016x' % random.randrange(16**16)
+        sent_size = random.randint(16, 1024)
         
+        https_cipher = "-"
+        https_protocol = "-"
+        https_url = "-"
+        https_cert = "-"
+        # AWS elb access logs
+        if port == 443:
+            https_cipher = "ECDHE-RSA-AES128-GCM-SHA256"
+            https_protocol = "TLSv1.2"
+            https_url = LogGenerator.server_fqdn
+            https_cert = "arn:aws:acm:us-east-2:123456789012:certificate/12345678-1234-1234-1234-123456789012"
+            
+
         # Uppercase method
         method = method.upper()
         # Calc query and uri combo
         uri_with_query = "{uri}?{query}" if query != "-" else "{uri}"
         log = LogGenerator.log_line[server].format(
-            datetime=datetime,
+            datetime=datetime.strftime(LogGenerator.log_timeformat[server]),
             server_ip=LogGenerator.server_ip,
             fqdn=LogGenerator.server_fqdn,
             method=method,
@@ -100,6 +101,7 @@ class LogGenerator(object):
             port=port,
             source_ip=source_ip,
             user_agent=user_agent,
+            scheme=scheme,
             referer=referer,
             username=username,
             query=query,
@@ -110,11 +112,12 @@ class LogGenerator(object):
             size=size_bytes,
             uri_with_query=uri_with_query.format(uri=uri, query=query),
             ray_id=ray_id,
-            source_port=source_port,
             sent_size=sent_size,
             status_code_list="200",
             https_cipher=https_cipher,
             https_protocol=https_protocol,
+            https_url=https_url,
+            https_cert=https_cert
         )
         return log
 

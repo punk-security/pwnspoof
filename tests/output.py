@@ -31,8 +31,8 @@ log_types = {
     "NGINX": {"field_count": 12, "uri_offset": 6},
     "IIS": {"field_count": 15, "uri_offset": 4},
     "CLF": {"field_count": 10, "uri_offset": 6},
-    #"CLOUDFLARE": {"field_count": 11, "uri_offset": 6},
-    "AWS": {"field_count": 18, "uri_offset": 6}
+    "CLOUDFLARE": {"field_count": 21, "uri_offset": 4},
+    "AWS": {"field_count": 31, "uri_offset": 0}
 }
 
 
