@@ -4,6 +4,8 @@ from string_formatter import handlebar_replace
 
 import random
 
+import secrets
+
 
 class LogGenerator(object):
     dateformat = "%Y-%m-%d %H:%M:%S"
@@ -24,7 +26,7 @@ class LogGenerator(object):
         "NGINX": '{source_ip} - {username} {datetime} "{method} {uri_with_query} HTTP/1.1" {status_code} {size} "{referer}" "{user_agent}"',
         "CLF": '{source_ip} - {username} {datetime} "{method} {uri_with_query} HTTP/1.1" {status_code} {size}',
         "CLOUDFLARE": '{{"ClientIP": "{source_ip}", "ClientRequestHost": "{fqdn}", "ClientRequestMethod": "{method}", "ClientRequestURI": "{uri}", "ClientRequestUserAgent":"{user_agent}", "EdgeEndTimestamp": "{datetime}", "EdgeResponseBytes": {size}, "EdgeResponseStatus": {status_code}, "EdgeStartTimestamp": "{datetime}", "RayID": "{ray_id}",  "RequestHeaders":{{"cf-access-user":"{username}"}}}}',
-        "AWS": '{scheme} {datetime} app/my-loadbalancer/50dc6c495c0c9188 {source_ip}:{port} {server_ip}:{port} 0.000 0.001 0.000 {status_code} {status_code} {size} {sent_size} "{method} {scheme}://{fqdn}/{uri_with_query}:{port}/ HTTP/1.1" "{user_agent}" {https_cipher} {https_protocol} arn:aws:elasticloadbalancing:us-east-2:123456789012:targetgroup/my-targets/73e2d6bc24d8a067 "Root=1-58337262-36d228ad5d99923122bbe354" "{https_url}" "{https_cert}" 0 {datetime} "forward" "-" "-" "{server_ip}:{port}" "{status_code_list}" "-" "-"',
+        "AWS": '{scheme} {datetime} app/my-loadbalancer/50dc6c495c0c9188 {source_ip}:{port} {server_ip}:{port} 0.000 0.001 0.000 {status_code} {status_code} {size} {sent_size} "{method} {scheme}://{fqdn}/{uri_with_query}:{port}/ HTTP/1.1" "{user_agent}" {https_cipher} {https_protocol} arn:aws:elasticloadbalancing:us-east-2:123456789012:targetgroup/my-targets/73e2d6bc24d8a067 "Root=1-58337262-36d228ad5d99923122bbe354" "{https_url}" "{https_cert}" 0 {datetime} "forward" "-" "-" "{server_ip}:{port}" "{status_code}" "-" "-"',
     }
 
     log_timeformat = {
@@ -52,7 +54,6 @@ class LogGenerator(object):
         substatus=0,
         win32_status=0,
         time_taken=20,
-        sent_size=None,
     ):
         # Format timestamp
         if LogGenerator.server_ip == None:
@@ -72,7 +73,7 @@ class LogGenerator(object):
         else:
             scheme = "https"
 
-        ray_id = "%016x" % random.randrange(16**16)
+        ray_id = secrets.token_hex(8)
         sent_size = random.randint(16, 1024)
 
         https_cipher = "-"
@@ -111,7 +112,6 @@ class LogGenerator(object):
             uri_with_query=uri_with_query.format(uri=uri, query=query),
             ray_id=ray_id,
             sent_size=sent_size,
-            status_code_list="200",
             https_cipher=https_cipher,
             https_protocol=https_protocol,
             https_url=https_url,
