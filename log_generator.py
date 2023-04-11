@@ -52,9 +52,9 @@ class LogGenerator(object):
         substatus=0,
         win32_status=0,
         time_taken=20,
-        source_port = random.randint(1025, 65535),
-        ray_id = '%030x' % random.randrange(16**30),
-        sent_size = random.randint(16, 1024),
+        source_port = None,
+        ray_id = None,
+        sent_size = None,
         status_code_list = "-",
         https_cipher = "-",
         https_protocol = "-",
@@ -73,7 +73,6 @@ class LogGenerator(object):
             https_cipher = "ECDHE-RSA-AES128-GCM-SHA256"
             https_protocol = "TLSv1.2"
 
-
         # Set Referer
         if referer != "-":
             if "http" not in referer:
@@ -83,6 +82,16 @@ class LogGenerator(object):
                     server=LogGenerator.server_fqdn,
                     uri=referer.lstrip("/"),
                 )
+
+        if source_port == None:
+            source_port = random.randint(1025, 65535)
+        
+        if ray_id == None:
+            ray_id = '%030x' % random.randrange(16**30)
+
+        if source_port == None:
+            sent_size = random.randint(16, 1024)
+        
         # Uppercase method
         method = method.upper()
         # Calc query and uri combo
