@@ -20,7 +20,7 @@ banner = """\
      /_/    \__,_/_/ /_/_/|_|/____/\___/\___/\__,_/_/  /_/\__/\__, /  
                                             PRESENTS         /____/  
 
-                         -- PWNSpoof v0.3.2 --
+                         -- PWNSpoof v0.4.0 --
   A spoof log generator to practice incident response and threat hunting!
         """
 

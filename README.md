@@ -1,6 +1,6 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/punk-security/pwnspoof/graphs/commit-activity)
-[![Maintaner](https://img.shields.io/badge/maintainer-PunkSecurity-blue)](https://www.punksecurity.co.uk)
+[![Maintainer](https://img.shields.io/badge/maintainer-PunkSecurity-blue)](https://www.punksecurity.co.uk)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=punk-security_pwnspoof&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=punk-security_pwnspoof)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=punk-security_pwnspoof&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=punk-security_pwnspoof)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=punk-security_pwnspoof&metric=bugs)](https://sonarcloud.io/summary/new_code?id=punk-security_pwnspoof)
@@ -35,7 +35,7 @@ pwnSpoof was created on the back of a threat hunting training exercise [Punk Sec
 The idea behind the pwnSpoof application is to;
 *  Provide a quick CTF style training environment
 *  Create unique logs every run
-*  Test threat hunting in IIS, Apache and NGINX logs
+*  Test threat hunting in IIS, Apache, NGINX, Cloudflare and AWS ALB logs
 
 Once you have created a set of logs, the idea is to load them in to Splunk and use various techniques to answer the following questions;
 
@@ -93,7 +93,7 @@ positional arguments:
   {banking,wordpress,generic}
                         App to emulate
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --out OUT             Output file (default: pwnspoof.log)
   --iocs                Do you want to know the attackers iocs for easier searching? (default: False)
