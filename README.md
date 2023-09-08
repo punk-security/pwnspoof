@@ -166,6 +166,21 @@ python pwnspoof.py banking --spoofed-attacks 0 --additional-attacker-ips 192.168
 
 [![Demo](/images/pwnspoof.gif)](#Demo)
 
+## Container Support
+
+Build the container
+
+```
+podman built -t pwnspoof .
+```
+
+Then you can generate logs via the container with the following command (This is presuming you build the container with the tag pwnspoof)
+
+```
+## touch pwnspoof.log
+podman run -v ./pwnspoof.log:/output/pwnspoof.log pwnspoof banking
+```
+
 ## Road Map
 
 pwnSpoof is built to produce to authentic web attack logs and it does this really well.  Right now we are focused on refactoring the code, building out our testing suite and getting the first push to PyPi but we have *huge* ambitions for pwnSpoof.
