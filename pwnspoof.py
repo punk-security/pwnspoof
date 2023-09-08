@@ -121,6 +121,12 @@ attack_settings.add_argument(
     default="RD",
     help="Set the attackers user-agent.  Use RD for random (default: %(default)s)",
 )
+attack_settings.add_argument(
+    "--attacker-ips",
+    type=str,
+    default="",
+    help="Inject a set of attackers ip addresses, comma separated (default: %(default)s)",
+)
 try:
     args = parser.parse_args()
 except SystemExit as e:
@@ -205,6 +211,23 @@ for x in range(0, args.spoofed_attacks):
     attack.chosen_attack_payloads = []
     sh.add_session(attack)
     attacker_sessions.append(attack)
+## Convert args.attacker_ips to list
+if args.attacker_ips != "":
+    attacker_ips = args.attacker_ips.split(",")
+    for ip in attacker_ips:
+        attack_start_date = (random.choice(sh.sessions)).start_datetime
+        attack = Session(
+            attack_start_date,
+            list(apps[args.app].attacks[args.attack_type]()),
+            user_agent=attacker_user_agent,
+            username=random.choice(sh.sessions).username,
+            source_ip=ip,
+            app=apps[args.app],
+        )
+        attack.attack_payloads = []
+        attack.chosen_attack_payloads = []
+        sh.add_session(attack)
+        attacker_sessions.append(attack)
 ## Generate and output
 
 print("Generating the logz and writing them to '{}'".format(args.out))
