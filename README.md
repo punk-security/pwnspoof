@@ -177,6 +177,7 @@ podman built -t pwnspoof .
 Then you can generate logs via the container with the following command (This is presuming you build the container with the tag pwnspoof)
 
 ```
+## touch pwnspoof.log
 podman run -v ./pwnspoof.log:/output/pwnspoof.log pwnspoof banking
 ```
 
