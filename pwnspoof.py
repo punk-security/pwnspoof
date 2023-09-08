@@ -211,7 +211,7 @@ for x in range(0, args.spoofed_attacks):
     attack.chosen_attack_payloads = []
     sh.add_session(attack)
     attacker_sessions.append(attack)
-## Convert args.attacker_ips to list
+
 if args.attacker_ips != "":
     attacker_ips = args.attacker_ips.split(",")
     for ip in attacker_ips:
