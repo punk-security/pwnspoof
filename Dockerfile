@@ -1,6 +1,10 @@
 FROM python:alpine
 
-COPY ./* /app/
+COPY *.py /app/
+
+COPY IP2LOCATION-LITE-DB1.CSV /app/
+
+COPY docker_start.sh /app/
 
 WORKDIR /app/
 
