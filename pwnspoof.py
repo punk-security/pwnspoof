@@ -122,10 +122,10 @@ attack_settings.add_argument(
     help="Set the attackers user-agent.  Use RD for random (default: %(default)s)",
 )
 attack_settings.add_argument(
-    "--attacker-ips",
+    "--additional-attacker-ips",
     type=str,
     default="",
-    help="Inject a set of attackers ip addresses, comma separated (default: %(default)s)",
+    help="Additional attackers ip addresses, comma separated (default: %(default)s). If you wish to exclusively use this list set spoofed-attacks to 0",
 )
 try:
     args = parser.parse_args()
@@ -212,8 +212,9 @@ for x in range(0, args.spoofed_attacks):
     sh.add_session(attack)
     attacker_sessions.append(attack)
 
-if args.attacker_ips != "":
-    attacker_ips = args.attacker_ips.split(",")
+if args.additional_attacker_ips != "":
+    attacker_ips = args.additional_attacker_ips.split(",")
+    print("Injecting {} additional attack sessions".format(len(attacker_ips)))
     for ip in attacker_ips:
         attack_start_date = (random.choice(sh.sessions)).start_datetime
         attack = Session(

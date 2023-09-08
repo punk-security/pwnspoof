@@ -126,6 +126,8 @@ attack settings:
                         Set the attackers geo by 2 letter region. Use RD for random (default: RD)
   --attacker-user-agent ATTACKER_USER_AGENT
                         Set the attackers user-agent. Use RD for random (default: RD)
+  --additional-attacker-ips ADDITIONAL_ATTACKER_IPS
+                        Additional attackers ip addresses, comma separated (default: ). If you wish to exclusively use this list set spoofed-attacks to 0
 ```
 
 ### Examples
@@ -152,6 +154,12 @@ The following example will create a set of logs and output the attackers IP addr
 
 ```
 python pwnspoof.py banking --spoofed-attacks 3 --iocs 
+```
+
+The following example will create a set of logs and exclusively use the IP addresses specified
+
+```
+python pwnspoof.py banking --spoofed-attacks 0 --additional-attacker-ips 192.168.0.1,192.168.0.2
 ```
 
 ## Demo
